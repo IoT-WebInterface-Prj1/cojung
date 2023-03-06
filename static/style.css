@@ -1,0 +1,9 @@
+/* style.css */
+/*
+{% load static %} <!--static lib을 사용함을 의미-->
+<link rel = "stylesheet" type = "text/css" href = "{% static 'style.css' %}">
+*/
+.comment {
+    border-top:dotted 1px #db6f6f;
+    font-size:0.7em;
+}
