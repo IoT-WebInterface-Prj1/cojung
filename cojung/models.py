@@ -29,7 +29,7 @@ class Question(models.Model):
 
 
 class Answer(models.Model):
-    subject = models.models.CharField("제목", max_length=200)
+    subject = models.CharField("제목", max_length=200)
     content = models.TextField('질문 답변')
     create_date = models.DateTimeField()
     user = models.ForeignKey(User,on_delete=models.CASCADE, null=True)
@@ -44,7 +44,7 @@ class Answer(models.Model):
 class Resolve(models.Model):
     subject = models.CharField(' 제목', max_length = 200)
     content = models.TextField('풀이 내용')
-    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, related_name='')
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
     create_date =  models.DateTimeField('날짜')
     
     #ForeignKey
