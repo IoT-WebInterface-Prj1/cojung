@@ -32,8 +32,7 @@
     <!--제목-->
     <div>
         {% if question.problem %}
-        {% comment %} "{% url 'cojung:problem_detail'  question.problem.problem_id%}" {% endcomment %}
-            <a style = "font-weight : bold; color: #85b3b1;" href = "#">
+            <a style = "font-weight : bold; color: #85b3b1;" href = "{% url 'cojung:detail' question.problem_id %}">
                 [{{question.problem.subject}}]
             </a>
         {% endif %}

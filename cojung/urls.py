@@ -1,16 +1,16 @@
 from django.urls import path
-from .views import resolve_views, problem_views, question_views, post_views
+from .views import resolve_views, problem_views, question_views, post_views, vote_views
 
 app_name = 'cojung'
 
 urlpatterns = [
     #Problem Line --
-    path('', question_views.index, name='index'),
+    path('', problem_views.index, name='index'),
     path('<int:problem_id>/',problem_views.detail, name='detail'),
  
     # 어려워요 ,쉬워요 비교문  
-    path('<int:problem_pk>/hard/',problem_views.harder,name='hard'),
-    path('<int:problem_pk>/easy/',problem_views.easyer,name='easy'),
+    path('<int:problem_pk>/hard/',vote_views.harder,name='hard'),
+    path('<int:problem_pk>/easy/',vote_views.easyer,name='easy'),
     
     #Question Line --
     path('question/', question_views.question, name = 'question'),
