@@ -1,0 +1,52 @@
+<!--Main Site-->
+<!--Problems List-->
+
+{% extends 'base.html' %}
+
+{% block content %}
+<div class = 'container-fluid' style = 'margin-top : 80px'>
+    <!--문제/질문 리스트-->
+    <table class = 'table table-hover table-bordered'>
+        <thead>
+            <tr class = "thead-light">
+                <th style='width:50px'>번호</th>
+                <th>제목</th>
+                <th style='width:60px'>작성자</th>
+                <th style='width:60px'>쉬워요</th>
+                <th style='width:70px'>어려워요</th>
+                <th style='width:60px'>풀이수</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% if problemLst %}
+                {% for problem in problemLst %}
+                    <tr>
+                        <td>{{problem.id}}</td>
+                        <td>
+                            <!--====================-->
+                            <!--문제 url 만들어지면 수정 -->
+                            <!--====================-->
+                            {% comment %} <a class = 'subject' href = "{% url 'cojung:problem_detail' problem.id %}"> {% endcomment %}
+                                {{problem.subject}}
+                            {% comment %} </a> {% endcomment %}
+                            <!--====================-->
+                            <!--문제 url 만들어지면 수정 -->
+                            <!--====================-->
+                        </td>
+                        <td>{{problem.user.username}}</td>
+                        <td>{{problem.easy.count}}</td>
+                        <td>{{problem.hard.count}}</td>
+                        <td>{{problem.resolve_set.count}}</td>
+                    </tr>
+                {% endfor %}
+            {% endif %}
+        </tbody>
+    </table>
+</div>
+
+<!--글 업로드 버튼-->
+{% include 'buttons.html' %}
+
+<!--페이징 처리-->
+{% include 'pagination_problem.html' %}
+{% endblock content %}

@@ -1,0 +1,23 @@
+<div>
+    <strong>
+        {{question.answer_set.count}} 개의 답변
+    </strong>
+</div>
+
+<div>
+    {% if question.answer_set.count > 0 %}
+        {% for answer in question.answer_set.all %}
+            <div style = "margin : 20px 0px">
+                <strong>
+                    {{answer.user.username}}
+                </strong>
+                <div style = "color:#c3c4c4">
+                    {{answer.create_date}}
+                </div>
+                <div class = "bg-light" style = "padding: 0px 20px 20px 20px; white-space : pre-line;">
+                    {{answer.content}}
+                </div>
+            </div>
+        {% endfor %}
+    {% endif %}
+</div>
