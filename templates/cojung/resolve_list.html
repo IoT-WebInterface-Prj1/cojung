@@ -1,0 +1,35 @@
+{% extends 'base.html' %} {% load cojung_filter %} {% block content %}
+<div class="container my-3">
+  <!-- 문제 -->
+  <h2 class="border-bottom py-2">{{ problem.subject }}</h2>
+  <div class="card my-3">
+    <div class="card-body">
+      <div class="card-text">{{ problem.content|mark }}</div>
+      <div class="d-flex justify-content-end">
+        <div class="badge bg-light text-dark p-2 text-start">
+          <div class="mb-2">{{ problem.user.username }}</div>
+          <div>{{ question.create_date }}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- 풀이 -->
+  <h5 class="border-bottom my-3 py-2">
+    {{problem.resolve_set.count}}개의 답변이 있습니다.
+  </h5>
+  {% for answer in problem.resolve_set.all %}
+  <a id="answer_{{ answer.id }}"></a>
+  <div class="card my-3">
+    <div class="card-body">
+      <div class="card-text">{{ resolve.content|mark }}</div>
+      <div class="d-flex justify-content-end">
+        <div class="badge bg-light text-dark p-2 text-start">
+          <div class="mb-2">{{ resolve.user.username }}</div>
+          <div>{{ resolve.create_date }}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+{% endblock %}
