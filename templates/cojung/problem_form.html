@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+{% load bootstrap4 %}
+{% load static %}
+
+{% block content %}
+
+  <div style="width:500px" class="mx-auto">
+    <div class="border-bottom">
+      <h4>질문등록</h4>
+    </div>
+    <br>
+
+    <form method="post" class="post-form my-3">
+      {% csrf_token %}
+
+      {% include 'form_errors.html' %}
+
+      <div class="form-group">
+        <label for="subject">제목:</label>
+        <input type="text" name="subject" class="form-control" required="required" id="subject" value="{{ from.subject.value|default_if_none:'' }} ">
+      </div>
+      <br>
+      <div class="form-group">
+        <label for="content">내용:</label>
+        <textarea name="content" rows="10" class="form-control" id="content">{{ from.content.value|default_if_none:'' }}</textarea>
+      </div>
+
+      <br>
+      <button type="submit" class="btn btn-primary">
+        <i class="fa-solid fa-check"></i>
+        저장하기
+      </button>
+
+      <a href="#" class="btn btn-primary">
+        <i class="fa-solid fa-list-ul"></i>
+        목록으로
+      </a>
+    </form>
+
+  </div>
+
+{% endblock content %}
+
+{% block style %}
+  <link rel="stylesheet" href="{% static 'summernote-bs4.min.css' %}">
+{% endblock style %}
+
+{% block script %}
+  <script src="{% static 'summernote-bs4.min.js' %}"></script>
+  <script src="{% static 'summernote-ko-KR.min.js' %}"></script>
+
+  <script>
+    $(function () {
+      // Summernote
+      $('#content').summernote({height: 300})
+    })
+  </script>
+{% endblock script %}

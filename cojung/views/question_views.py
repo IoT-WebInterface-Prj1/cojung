@@ -1,5 +1,5 @@
 from django.shortcuts import render, get_object_or_404
-from .models import Question
+from ..models import Question
 from django.db.models import Q, Count
 from django.core.paginator import Paginator
 
