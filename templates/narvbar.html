@@ -1,43 +1,44 @@
 <nav class="navbar navbar-expand-sm bg-light navbar-light fixed-top">
-    <!-- Brand -->
-    <a class="navbar-brand" href="{% url 'cojung:index' %}">코딩의 정석</a>
-   
-    <!--문제 풀기, 질문하기 버튼-->
-    <div>
-        <!-- Links -->
-        <ul class="navbar-nav">
-            <li class="nav-item">
-                <a class="nav-link" href="{% url 'cojung:index' %}">코딩 문제 풀기</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="{% url 'cojung:question' %}">질문하기</a>
-            </li>
-        </ul>
-    </div>
-    
-    <!--로그인, 로그아웃-->
-        <div class = 'navbar-nav ml-auto d-flex flex-row-reverse'>
-            <ul class="navbar-nav">
-                {% if user.is_authenticated %}
-                <li class="nav-item">
-                    <a  class="nav-link" href="#">
-                        {{user.username}} 님 반갑습니다 !
-                    </a>             
-                </li>
-                <li class="nav-item">
-                    <a  class="nav-link" href="#">
-                        로그아웃
-                    </a>             
-                </li>
-                {% else %}
-                <li class="nav-item ">
-                    <a  class="nav-link" href="#">로그인</a>
-                </li>
-                <li>
-                    <a class="nav-link" href= "#">회원가입</a>                  
-                </li>
-                {% endif %}
-            </ul>
-        </div>
-    </li>
-  </nav>
+  <!-- Brand -->
+  <a class="navbar-brand" href="{% url 'cojung:index' %}">코딩의 정석</a>
+
+  <!--문제 풀기, 질문하기 버튼-->
+  <div>
+    <!-- Links -->
+    <ul class="navbar-nav">
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'cojung:index' %}">코딩 문제 풀기</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'cojung:question' %}">질문하기</a>
+      </li>
+    </ul>
+  </div>
+
+  <!--로그인, 로그아웃-->
+  <div class='navbar-nav ml-auto d-flex flex-row-reverse'>
+    <ul class="navbar-nav">
+      {% if user.is_authenticated %}
+        <li class="nav-item">
+          <a class="nav-link" href="#">
+            {{user.username}}
+            님 반갑습니다 !
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'member:logout' %}">
+            로그아웃
+          </a>
+        </li>
+      {% else %}
+        <li class="nav-item ">
+          <a class="nav-link" href="{% url 'member:login' %}">로그인</a>
+        </li>
+        <li>
+          <a class="nav-link" href="{% url 'member:signup' %}">회원가입</a>
+        </li>
+      {% endif %}
+    </ul>
+  </div>
+</li>
+</nav>
