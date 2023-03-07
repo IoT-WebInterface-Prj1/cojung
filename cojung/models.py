@@ -22,14 +22,13 @@ class Question(models.Model):
     create_date = models.DateTimeField('생성일')
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     # FK
-    problem = models.ForeignKey(Problem, on_delete=models.CASCADE)
+    problem = models.ForeignKey(Problem, null=True, blank=True, on_delete=models.CASCADE)
     
     def __str__(self):
         return f'Problem : {self.problem} / {self.subject}'
 
 
 class Answer(models.Model):
-    subject = models.CharField("제목", max_length=200)
     content = models.TextField('질문 답변')
     create_date = models.DateTimeField()
     user = models.ForeignKey(User,on_delete=models.CASCADE, null=True)
@@ -38,7 +37,7 @@ class Answer(models.Model):
     question = models.ForeignKey(Question, on_delete=models.CASCADE)
     
     def __str__(self):
-        return f'Question : {self.question} / {self.subject}'
+        return f'Question : {self.question} / {self.content}'
 
 # 문제에 대한 풀이
 class Resolve(models.Model):
