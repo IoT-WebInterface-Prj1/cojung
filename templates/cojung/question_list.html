@@ -4,6 +4,16 @@
 
 {% block content %}
 <div class = 'container-fluid' style = 'margin-top : 80px'>
+    <!--검색창 추가-->
+    <div class = 'row justify-content-end my-3'>
+        <div class = 'col-4 input-group'>
+            <input type = 'text' class = 'form-control kw' value = "{{kw|default_if_none:''}}">
+            <div class = 'input-group-append'>
+                <button class = 'btn btn-outline-secondary' id = 'btn-search'> 검색 </button>
+            </div>
+        </div>
+    </div>
+    <!--검색창 추가 끝-->
     <!--문제/질문 리스트-->
     <table class = 'table table-hover table-bordered'>
         <thead>
@@ -42,4 +52,32 @@
 <!--페이징 처리-->
 {% include 'pagination_question.html' %}
 
+<!--============-->
+<!--Form 추가-->
+<!--============-->
+<form id = 'searchForm' method='get' action = "{% url 'cojung:question' %}">
+    <input type = 'hidden' id = 'kw' name = 'kw' value = "{{kw|default_if_none:''}}">
+    <input type = 'hidden' id = 'page' name = 'page' value = "{{page}}">
+</form>
+<!--============-->
+<!--Form 추가 끝-->
+<!--============-->
 {% endblock content %}
+
+{% block script %}
+    <script type = 'text/javascript'>
+        $(document).ready(function() {
+            /*페이징처리*/
+            $(".page-link").on('click', function() {
+                $("#page").val($(this).data("page"));
+                $("#searchForm").submit();
+            });
+            /*검색처리*/
+            $("#btn-search").on('click', function() {
+                $("#page").val(1);
+                $("#kw").val($(".kw").val());
+                $("#searchForm").submit();
+            })
+        });
+    </script>
+{% endblock script %}
