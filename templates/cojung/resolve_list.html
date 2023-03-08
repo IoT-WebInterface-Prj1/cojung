@@ -17,8 +17,8 @@
   <h5 class="border-bottom my-3 py-2">
     {{problem.resolve_set.count}}개의 답변이 있습니다.
   </h5>
-  {% for answer in problem.resolve_set.all %}
-  <a id="answer_{{ answer.id }}"></a>
+  {% for resolve in problem.resolve_set.all %}
+  <a id="resolve_{{ resolve.id }}"></a>
   <div class="card my-3">
     <div class="card-body">
       <div class="card-text">{{ resolve.content|mark }}</div>
