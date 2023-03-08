@@ -9,8 +9,8 @@ class Problem(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='problem_author')
     
     #vote
-    hard = models.ManyToManyField(User, null=True, blank=True, related_name='vote_hard_problem_user')
-    easy = models.ManyToManyField(User, null=True, blank=True, related_name='vote_easy_problem_user')
+    hard = models.ManyToManyField(User, related_name='vote_hard_problem_user')
+    easy = models.ManyToManyField(User, related_name='vote_easy_problem_user')
 
     def __str__(self):
         return f'{self.subject}'
