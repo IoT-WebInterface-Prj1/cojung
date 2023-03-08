@@ -7,7 +7,6 @@ from django.utils import timezone
 from cojung.forms import ResolveForm
 from cojung.models import Problem, Resolve
 
-@login_required(login_url='common:login')
 def Resolve_create(request, problem_id):
     problem = get_object_or_404(Problem, pk=problem_id)
     if request.method == "POST":
@@ -18,9 +17,20 @@ def Resolve_create(request, problem_id):
             resolve.create_date = timezone.now()
             resolve.problem = problem
             resolve.save()
-            return redirect('{}#answer_{}'.format(
-                resolve_url('cojung:detail', problem_id=problem.id), resolve.id))
     else:
         return HttpResponseNotAllowed('Only POST is possible.')
     context = {'problem': problem, 'form': form}
-    return render(request, 'pybo/problem.html', context)
+    return render(request, 'cojung/resolve_list.html', context)
+
+def index(request):
+
+    resolveLst = Resolve.objects.order_by('-create_date')    
+
+    page = request.GET.get('page', '1') #페이지
+    paginator = Paginator(resolveLst, 10) #페이지당 10개씩
+    
+    pageObj = paginator.get_page(page)
+    context = {
+        'resolveLst' : pageObj, 
+    }
+    return render(request, 'cojung/resolve_list.html', context)
