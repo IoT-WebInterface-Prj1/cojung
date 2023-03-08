@@ -9,8 +9,9 @@ urlpatterns = [
     path('problem/<int:problem_id>/',problem_views.detail, name='detail'),
  
     # 어려워요 ,쉬워요 비교문  
-    path('<int:problem_pk>/hard/',vote_views.harder,name='hard'),
-    path('<int:problem_pk>/easy/',vote_views.easyer,name='easy'),
+    path('problem/hard/<int:problem_id>',vote_views.harder,name='hard'),
+    path('problem/easy/<int:problem_id>',vote_views.easyer,name='easy'),
+    path('problem/both/<int:problem_id>',vote_views.both,name='both'),
     
     #Question Line --
     path('question/', question_views.question, name = 'question'),
