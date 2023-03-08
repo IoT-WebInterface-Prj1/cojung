@@ -1,5 +1,5 @@
 from django import forms
-from cojung.models import Resolve, Problem
+from cojung.models import Resolve, Problem, Answer
 
 class ProblemForm(forms.ModelForm):
     class Meta:
@@ -13,3 +13,8 @@ class ResolveForm(forms.ModelForm):
         labels = {
             'content': '답변내용',
         }
+
+class AnswerForm(forms.ModelForm):
+    class Meta:
+        model = Answer
+        fields = ['content']

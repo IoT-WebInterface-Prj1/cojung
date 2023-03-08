@@ -1,11 +1,16 @@
 {% extends 'base.html' %}
-{% load bootstrap4 %}
 
 {% block content %}
-<form>
+<form action = "{% url 'cojung:answer_create' question.id %}">
     {% csrf_token %}
-    {% bootstrap_form form %}
+    
+    <div class = 'form-group'>
+        <textarea {% if not user.is_authenticated %} disabled = 'disabled' {% endif %}
+            name = 'content' id = 'content' class = 'form-control' row = '16'>
+        </textarea>
+        </div>
 
-    <button type='submit' class = 'btn btn-primary'> 답변 작성 </button>
+    <input {% if not user.is_authenticated  %} disabled = 'disabled'  {% endif %}
+    type = 'submit' value = '답변 등록'  class = 'btn btn-secondary'
 </form>
 {% endblock content %}
