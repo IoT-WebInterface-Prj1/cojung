@@ -18,6 +18,7 @@ urlpatterns = [
     #풀이 생성 
     path('resolve/create/<int:problem_id>/',resolve_views.Resolve_create,name='resolve_create'),
 
-    # 문제 업로드(메인 화면에서 새글작성)
+    # 문제 업로드 / 질문 작성
     path('createpost/', post_views.create_post, name='create_post'),
+    path('createquestion/', post_views.create_question, name='create_question'),
 ]
