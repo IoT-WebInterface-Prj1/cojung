@@ -12,9 +12,12 @@
             <div class="mb-2">{{ problem.user.username }}</div>
             <div>{{ problem.create_date }}</div>
               <div class="my-3">
-                  {% if  request.user  in problem.hard.all %}
+                  {% if  request.user  in problem.easy.all %}
                     <a href="{% url 'cojung:easy' problem.id  %}" class="btn btn-sm btn-success"> 쉬워요</a>
                         <span class="badge rounded-pill bg-danger">{{problem.easy.count}}</span>
+                  {%elif request.user in problem.hard.all %}
+                    <a href="{% url 'cojung:both' problem.id  %}" class="btn btn-sm btn-outline-secondary"> 쉬워요</a>
+                      <span class="badge rounded-pill bg-danger">{{problem.easy.count}}</span>
                   {% else %}
                     <a href="{% url 'cojung:easy' problem.id  %}" class="btn btn-sm btn-outline-success"> 쉬워요</a>
                         <span class="badge rounded-pill bg-danger">{{problem.easy.count}}</span>
@@ -24,6 +27,9 @@
                   {% if  request.user  in problem.hard.all %}
                     <a href="{% url 'cojung:hard' problem.id  %}" class="btn btn-sm btn-danger"> 어려워요</a>
                         <span class="badge rounded-pill bg-danger">{{problem.hard.count}}</span>
+                  {%elif request.user in problem.easy.all %}
+                    <a href="{% url 'cojung:both' problem.id  %}" class="btn btn-sm btn-outline-secondary"> 어려워요</a>
+                      <span class="badge rounded-pill bg-danger">{{problem.hard.count}}</span>
                   {% else %}
                     <a href="{% url 'cojung:hard' problem.id  %}" class="btn btn-sm btn-outline-danger"> 어려워요</a>
                         <span class="badge rounded-pill bg-danger">{{problem.hard.count}}</span>
