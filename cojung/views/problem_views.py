@@ -1,7 +1,5 @@
-from django.contrib.auth import authenticate, login 
-from django.shortcuts import render,redirect,get_object_or_404
+from django.shortcuts import render, get_object_or_404
 from cojung.models import Problem
-from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 from django.db.models import Q, Count
 
@@ -10,11 +8,44 @@ def index(request):
     """
     코딩의 정석 "Problem" 목록 출력
     """
-    problemLst = Problem.objects.order_by('-create_date')    
+    """
+    코딩의 정석 "Problem" 목록 출력
+    """
+    page = request.GET.get('page', '1') #페이지
+    # ==============
+    # 정렬기능 추가 
+    # ==============
+    so = request.GET.get('so', 'recent')
+    # ==============
+    # 검색기능 추가 
+    # ==============
+    kw = request.GET.get('kw', '')
+    # ==============
+    # 정렬처리
+    # ==============
+    # problemLst = Problem.objects.order_by('-create_date')   
+    if so == 'recent':
+        problemLst = Problem.objects.order_by('-create_date')
+    elif so == 'hard':
+        problemLst = Problem.objects.annotate(num_hard = Count('hard')).order_by('-num_hard', '-create_date')
+    elif so == 'easy':
+        problemLst = Problem.objects.annotate(num_easy = Count('easy')).order_by('-num_easy', '-create_date')
+    elif so == 'resolve':
+        problemLst = Problem.objects.annotate(num_resolve = Count('resolve')).order_by('-num_resolve', '-create_date')
+    
+    # ==============
+    # 조회 처리
+    # ==============
+    if kw :
+        problemLst = problemLst.filter(
+            Q(subject__icontains = kw) | #제목검색
+            Q(content__icontains = kw) | #내용검색
+            Q(user__username__icontains = kw)  #작성자검색
+        ).distinct()
+    
     # ==============
     # 페이징 처리
     # ==============
-    page = request.GET.get('page', '1') #페이지
     paginator = Paginator(problemLst, 10) #페이지당 10개씩
     
     pageObj = paginator.get_page(page)
@@ -23,6 +54,9 @@ def index(request):
     context = {
         # 'problemLst' : problemLst,
         'problemLst' : pageObj, 
+        'page' : page,
+        'so' : so, 
+        'kw': kw,
     }
     
     return render(request, 'cojung/problem_list_main.html', context)
