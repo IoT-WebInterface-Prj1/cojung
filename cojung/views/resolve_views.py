@@ -7,6 +7,8 @@ from django.utils import timezone
 from cojung.forms import ResolveForm
 from cojung.models import Problem, Resolve
 
+
+@login_required
 def Resolve_create(request, problem_id):
     problem = get_object_or_404(Problem, pk=problem_id)
     if request.method == "POST":
