@@ -58,6 +58,7 @@
 <form id = 'searchForm' method='get' action = "{% url 'cojung:question' %}">
     <input type = 'hidden' id = 'kw' name = 'kw' value = "{{kw|default_if_none:''}}">
     <input type = 'hidden' id = 'page' name = 'page' value = "{{page}}">
+    <input type = 'hidden' id = 'problem_num' name = 'problem_num' value = "{{problem_num|default_if_none:''}}">
 </form>
 <!--============-->
 <!--Form 추가 끝-->
