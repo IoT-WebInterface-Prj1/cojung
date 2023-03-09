@@ -1,7 +1,17 @@
 {% extends 'base.html' %}
 {% load cojung_filter %}
 {% block content%}
-  <div class="container my -3 " style="margin-top : 80px">
+<div class="container my -3 " style="margin-top : 80px">
+    {% if messages %}
+    <div class="alert alert-danger my-3" role="alert">
+        {% for message in messages %}
+        <strong>{{ message.tags }}</strong>
+        <ul>
+            <li>{{ message.message }}</li>
+        </ul>
+        {% endfor %}
+    </div>
+    {% endif %}
     <h2 class="border-bottom py-2">{{problem.subject }}</h2>
     <div class="card my-3">
       <div class="card-body">
@@ -22,45 +32,48 @@
           <div class="badge bg-light text-dark p-2 text-start">
             <div class="mb-2">{{ problem.user.username }}</div>
             <div>{{ problem.create_date }}</div>
-            <div class="my-3">
-              {% if request.user in problem.hard.all %}
-                <a href="{% url 'cojung:easy' problem.id  %}" class="btn btn-sm btn-success">
-                  쉬워요</a>
-                <span class="badge rounded-pill bg-danger">{{problem.easy.count}}</span>
-              {% else %}
-                <a href="{% url 'cojung:easy' problem.id  %}" class="btn btn-sm btn-outline-success">
-                  쉬워요</a>
-                <span class="badge rounded-pill bg-danger">{{problem.easy.count}}</span>
-                {%endif%}
+              <div class="my-3">
+                  {% if  request.user  in problem.easy.all %}
+                    <a href="{% url 'cojung:easy' problem.id  %}" class="btn btn-sm btn-success"> 쉬워요</a>
+                        <span class="badge rounded-pill bg-danger">{{problem.easy.count}}</span>
+                  {%elif request.user in problem.hard.all %}
+                    <a href="{% url 'cojung:both' problem.id  %}" class="btn btn-sm btn-outline-secondary"> 쉬워요</a>
+                      <span class="badge rounded-pill bg-danger">{{problem.easy.count}}</span>
+                  {% else %}
+                    <a href="{% url 'cojung:easy' problem.id  %}" class="btn btn-sm btn-outline-success"> 쉬워요</a>
+                        <span class="badge rounded-pill bg-danger">{{problem.easy.count}}</span>
+                  {%endif%} 
               </div>
               <div class="my-3">
-                {% if request.user in problem.hard.all %}
-                  <a href="{% url 'cojung:hard' problem.id  %}" class="btn btn-sm btn-danger">
-                    어려워요</a>
-                  <span class="badge rounded-pill bg-danger">{{problem.hard.count}}</span>
-                {% else %}
-                  <a href="{% url 'cojung:hard' problem.id  %}" class="btn btn-sm btn-outline-danger">
-                    어려워요</a>
-                  <span class="badge rounded-pill bg-danger">{{problem.hard.count}}</span>
-                  {%endif%}
-                </div>
+                  {% if  request.user  in problem.hard.all %}
+                    <a href="{% url 'cojung:hard' problem.id  %}" class="btn btn-sm btn-danger"> 어려워요</a>
+                        <span class="badge rounded-pill bg-danger">{{problem.hard.count}}</span>
+                  {%elif request.user in problem.easy.all %}
+                    <a href="{% url 'cojung:both' problem.id  %}" class="btn btn-sm btn-outline-secondary"> 어려워요</a>
+                      <span class="badge rounded-pill bg-danger">{{problem.hard.count}}</span>
+                  {% else %}
+                    <a href="{% url 'cojung:hard' problem.id  %}" class="btn btn-sm btn-outline-danger"> 어려워요</a>
+                        <span class="badge rounded-pill bg-danger">{{problem.hard.count}}</span>
+                  {%endif%} 
               </div>
             </div>
           </div>
         </div>
-        <form action="{% url 'cojung:index' %}" method="post" class="my-3">
-          {% csrf_token %}
-          <input type="submit" value="질문하기" class="btn btn-info"/>
-        </form>
-        <form action="{% url 'cojung:resolve_create' problem.id %}" method="post" class="my-3">
-          {% csrf_token %}
-          <input type="submit" value="      다른 사용자 풀이 보러가기       " class="btn btn-primary"/>
-        </form>
-        <form action="{% url 'cojung:resolve_create' problem.id %}" method="post" class="my-3">
-          {% csrf_token %}
-          <div class="mb-3">
-            <label for="content" class="form-label">풀이내용</label>
-            <textarea {%
+      </div>
+    </div>
+      <form action="{% url 'cojung:create_question_problem' %}" method="post" class="my-3">
+      {% csrf_token %}
+        <input type="submit" value="질문하기" class="btn btn-info"/>
+      </form>
+      <form action="{% url 'cojung:resolve_create' problem.id %}" method="post" class="my-3">
+      {% csrf_token %}
+        <input type="submit" value="      다른 사용자 풀이 보러가기       " class="btn btn-primary"/>
+      </form>
+                <form action="{% url 'cojung:resolve_create' problem.id %}" method="post" class="my-3">
+              {% csrf_token %}
+              <div class="mb-3">
+                <label for="content" class="form-label">풀이내용</label>
+                <textarea {%
                 if
                 not
                 user.is_authenticated

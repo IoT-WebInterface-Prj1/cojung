@@ -4,9 +4,11 @@ from django.http import HttpResponseNotAllowed
 from django.shortcuts import render, get_object_or_404, redirect, resolve_url
 from django.utils import timezone
 
-from cojung.forms import ResolveForm
-from cojung.models import Problem, Resolve
+from cojung.forms import ResolveForm,CommentForm
+from cojung.models import Problem, Resolve, Comment
 
+
+@login_required
 def Resolve_create(request, problem_id):
     problem = get_object_or_404(Problem, pk=problem_id)
     if request.method == "POST":
@@ -22,15 +24,32 @@ def Resolve_create(request, problem_id):
     context = {'problem': problem, 'form': form}
     return render(request, 'cojung/resolve_list.html', context)
 
-def index(request):
 
-    resolveLst = Resolve.objects.order_by('-create_date')    
+@login_required(login_url='common:login')
+def comment_create_resolve(request, resolve_id):
+    """
+    pybo 답글댓글등록
+    """
+    resolve = get_object_or_404(Resolve, pk=resolve_id)
+    if request.method == "POST":
+        form = CommentForm(request.POST)
+        if form.is_valid():
+            comment = form.save(commit=False)
+            comment.user = request.user
+            comment.create_date = timezone.now()
+            comment.resolve = resolve
+            comment.save()
+            return redirect('{}#comment_{}'.format(
+                resolve_url('cojung:resolve_detail', problem_id=comment.resolve.problem.id), comment.id))
+    else:
+        form = CommentForm()
+    context = {'form': form}
+    return render(request, 'cojung/comment_form.html', context)
 
-    page = request.GET.get('page', '1') #페이지
-    paginator = Paginator(resolveLst, 10) #페이지당 10개씩
-    
-    pageObj = paginator.get_page(page)
-    context = {
-        'resolveLst' : pageObj, 
-    }
-    return render(request, 'cojung/resolve_list.html', context)
+def resolve_detail(request,problem_id):
+    """
+    Problem 게시글
+    """
+    problem = get_object_or_404(Problem, pk=problem_id)
+    context = {'problem':problem}
+    return render(request,'cojung/resolve_list.html',context)

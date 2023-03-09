@@ -8,7 +8,7 @@
     <!--정렬창/검색 추가-->
     <div class = 'row justify-content-between my-3' style = 'margin-bottom : 10px'>
       <!--정렬창 추가-->
-      <div class = 'col2'>
+      <div class = 'col-2'>
         <select class = 'form-control so'>
           <!--최신순-->
           <option value = 'recent' 
@@ -42,13 +42,15 @@
       </div>
       <!--정렬창 추가 끝-->
       <!--검색창 추가-->
-      <div class = 'col-4 input-group'>
-        <input type = 'text' class = 'form-control kw' value = "{{kw|default_if_none:''}}">
-        <div class = 'input-group-append'>
-          <button class = 'btn btn-outline-secondary' type = 'button' id = 'btn_search'>검색</button>
+      <div class = 'col-4 '>
+        <div class = 'input-group'>
+          <input type = 'text' class = 'form-control kw' value = "{{kw|default_if_none:''}}">
+          <div class = 'input-group-append'>
+            <button class = 'btn btn-outline-secondary' type = 'button' id = 'btn_search'>검색</button>
+          </div>
         </div>
+        <!--검색창 추가 끝-->
       </div>
-      <!--검색창 추가 끝-->
     </div>
     <!--정렬창/검색 추가 끝-->
     <!--문제/질문 리스트-->
@@ -58,9 +60,9 @@
           <th style='width:50px'>번호</th>
           <th>제목</th>
           <th style='width:60px'>작성자</th>
-          <th style='width:60px'>쉬워요</th>
-          <th style='width:70px'>어려워요</th>
-          <th style='width:60px'>풀이수</th>
+          <th style='width:65px'>쉬워요</th>
+          <th style='width:85px'>어려워요</th>
+          <th style='width:65px'>풀이수</th>
         </tr>
       </thead>
       <tbody>

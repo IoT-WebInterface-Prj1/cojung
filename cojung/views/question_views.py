@@ -16,7 +16,7 @@ def question(request):
     # 검색기능
     # ==============
     kw = request.GET.get('kw', '')
-    
+    problem_num = request.GET.get('problem_num', '')
     # ==============
     # 페이징 처리
     # ==============
@@ -25,13 +25,18 @@ def question(request):
     # ==============
     # 검색처리
     # ==============
+    #문제 -> 질문으로 넘어온 경우
+    if problem_num:
+        questionLst = questionLst.filter(
+            Q(problem__id__icontains = problem_num)
+        ).distinct()
     if kw:
         questionLst = questionLst.filter(
             Q(subject__icontains=kw) | #제목검색
             Q(content__icontains=kw) | #내용검색
             Q(problem__subject__icontains=kw) | #질문의 제목 검색
             Q(user__username__icontains=kw) #작성자검색
-        )
+        ).distinct()
     
     # ==============
     # 페이징처리
@@ -44,6 +49,7 @@ def question(request):
         'questionLst' : pageObj,
         'page' : page,
         'kw' : kw,
+        'problem_num' : problem_num,
     }
     
     return render(request, 'cojung/question_list.html', context)
