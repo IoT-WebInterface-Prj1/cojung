@@ -26,7 +26,7 @@ urlpatterns = [
     path('createquestion/', post_views.create_question, name='create_question'),
     
     #Comment Line --
-    path('comment/create/<int:answer_id>', comment_views.comment_answer_create, name = 'comment_answer_create')
+    path('comment/create/<int:answer_id>', comment_views.comment_answer_create, name = 'comment_answer_create'),
 
     #풀이 생성 ,댓글
     path('resolve/<int:problem_id>/',resolve_views.resolve_detail,name='resolve_detail'),
