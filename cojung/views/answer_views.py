@@ -21,4 +21,4 @@ def answer_create(request, question_id):
         form = AnswerForm()
         
     context = {'question' : question, 'form' : form}
-    return render(request, 'cojung:question_detail.html', context)
+    return render(request, 'cojung/question_detail.html', context)

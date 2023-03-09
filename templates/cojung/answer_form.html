@@ -4,6 +4,16 @@
 <form method = 'POST' action = "{% url 'cojung:answer_create' question.id %}">
     {% csrf_token %}
     
+    {% if form.errors %}
+        <div class = 'alert alert-danger' role = 'alert'>
+            {% for field in form %}
+                {% if field.errors %}
+                    <strong>{{field.label}}</strong>
+                    {{field.errors}}
+                {% endif %}
+            {% endfor %}
+        </div>
+    {% endif %}
     <div class = 'form-group'>
         <textarea {% if not user.is_authenticated %} disabled = 'disabled' {% endif %}
             name = 'content' id = 'content' class = 'form-control' row = '16'>
