@@ -1,3 +1,6 @@
+{% extends 'base.html' %}
+
+{% block content %}
 <div>
     <strong>
         {{question.answer_set.count}} 개의 답변
@@ -38,3 +41,4 @@
         {% endfor %}
     {% endif %}
 </div>
+{% endblock content %}
