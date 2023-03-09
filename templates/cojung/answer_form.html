@@ -1,16 +1,16 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<form action = "{% url 'cojung:answer_create' question.id %}">
+<form method = 'POST' action = "{% url 'cojung:answer_create' question.id %}">
     {% csrf_token %}
     
     <div class = 'form-group'>
         <textarea {% if not user.is_authenticated %} disabled = 'disabled' {% endif %}
             name = 'content' id = 'content' class = 'form-control' row = '16'>
         </textarea>
-        </div>
+        <input {% if not user.is_authenticated  %} disabled = 'disabled'  {% endif %}
+        type = 'submit'value = '답변 등록'  class = 'btn btn-secondary'>
+    </div>
 
-    <input {% if not user.is_authenticated  %} disabled = 'disabled'  {% endif %}
-    type = 'submit' value = '답변 등록'  class = 'btn btn-secondary'
 </form>
 {% endblock content %}
