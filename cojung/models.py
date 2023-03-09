@@ -24,6 +24,8 @@ class Question(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     # FK
     problem = models.ForeignKey(Problem, null=True, blank=True, on_delete=models.CASCADE)
+    # 파일 업로드
+    txtfile = models.FileField('첨부파일', null=True, upload_to="media", blank=True)
     
     def __str__(self):
         return f'Problem : {self.problem} / {self.subject}'
