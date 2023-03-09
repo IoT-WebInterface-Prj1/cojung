@@ -5,11 +5,13 @@
 {% block content %}
 <div class = 'container-fluid' style = 'margin-top : 80px'>
     <!--검색창 추가-->
-    <div class = 'row justify-content-end my-3'>
-        <div class = 'col-4 input-group'>
-            <input type = 'text' class = 'form-control kw' value = "{{kw|default_if_none:''}}">
-            <div class = 'input-group-append'>
-                <button class = 'btn btn-outline-secondary' id = 'btn-search'> 검색 </button>
+    <div class = 'row d-flex justify-content-end my-3'>
+        <div class =  'col-4'>
+            <div class = 'input-group'>
+                <input type = 'text' class = 'form-control kw' value = "{{kw|default_if_none:''}}">
+                <div class = 'input-group-append'>
+                    <button class = 'btn btn-outline-secondary' id = 'btn-search'> 검색 </button>
+                </div>
             </div>
         </div>
     </div>
@@ -21,7 +23,7 @@
                 <th style='width:50px'>번호</th>
                 <th>제목</th>
                 <th style='width:70px'>작성자</th>
-                <th style='width:60px'>답변수</th>
+                <th style='width:70px'>답변수</th>
             </tr>
         </thead>
         <tbody>
