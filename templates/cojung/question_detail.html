@@ -47,9 +47,11 @@
     <div style = "font-size : large">
         {{question.content}}
     </div>
-    <div>
-        <a href="{{ question.txtfile.url }}" class="btn btn-primary">파일보기</a>
-    </div>
+    {% if question.txtfile %}
+        <div>
+            <a href="{{ question.txtfile.url }}" class="btn btn-primary">파일보기</a>
+        </div>
+    {% endif %}
     <br>
 
     <hr>

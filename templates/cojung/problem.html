@@ -22,9 +22,12 @@
         <!-- txt 파일 js 이용해서 읽기 -->
         {% comment %} <button onclick="openTextFile()">파일보기</button>
         <div id="output">...</div> {% endcomment %}
-        <div>
-          <a href="{{ problem.txtfile.url }}" class="btn btn-primary">파일보기</a>
-        </div>
+        {% if problem.txtfile %}
+          <div>
+            <a href="{{ problem.txtfile.url }}" class="btn btn-primary">파일보기</a>
+          </div>
+        {% endif %}
+        
         
         
 
