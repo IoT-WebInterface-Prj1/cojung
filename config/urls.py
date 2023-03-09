@@ -16,6 +16,8 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from cojung.views import problem_views
+from django.conf.urls.static import static
+from django.conf import settings
 
 urlpatterns = [
     path('', problem_views.index, name="index"),
@@ -23,3 +25,5 @@ urlpatterns = [
     path("cojung/", include('cojung.urls')),
     path("member/", include('member.urls')),
 ]
+# 파일 첨부를 위한  media 경로 추가
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

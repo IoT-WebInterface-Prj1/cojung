@@ -5,47 +5,58 @@
     <h2 class="border-bottom py-2">{{problem.subject }}</h2>
     <div class="card my-3">
       <div class="card-body">
-        <div class="card-text">{{ problem.content|mark }}</div>
-        <!-- 파일 업로드 한 후에 여기서 if 써서 content랑 file 첨부 -->
+        <div class="card-text">
+          {{ problem.content|mark }}
+        </div>
+
+        <!-- txt 파일 js 이용해서 읽기 -->
+        {% comment %} <button onclick="openTextFile()">파일보기</button>
+        <div id="output">...</div> {% endcomment %}
+        <a href="{{ problem.txtfile.url }}" class="btn btn-primary">파일보기</a>
+
         <div class="d-flex justify-content-end">
           <div class="badge bg-light text-dark p-2 text-start">
             <div class="mb-2">{{ problem.user.username }}</div>
             <div>{{ problem.create_date }}</div>
-              <div class="my-3">
-                  {% if  request.user  in problem.hard.all %}
-                    <a href="{% url 'cojung:easy' problem.id  %}" class="btn btn-sm btn-success"> 쉬워요</a>
-                        <span class="badge rounded-pill bg-danger">{{problem.easy.count}}</span>
-                  {% else %}
-                    <a href="{% url 'cojung:easy' problem.id  %}" class="btn btn-sm btn-outline-success"> 쉬워요</a>
-                        <span class="badge rounded-pill bg-danger">{{problem.easy.count}}</span>
-                  {%endif%} 
+            <div class="my-3">
+              {% if request.user in problem.hard.all %}
+                <a href="{% url 'cojung:easy' problem.id  %}" class="btn btn-sm btn-success">
+                  쉬워요</a>
+                <span class="badge rounded-pill bg-danger">{{problem.easy.count}}</span>
+              {% else %}
+                <a href="{% url 'cojung:easy' problem.id  %}" class="btn btn-sm btn-outline-success">
+                  쉬워요</a>
+                <span class="badge rounded-pill bg-danger">{{problem.easy.count}}</span>
+                {%endif%}
               </div>
               <div class="my-3">
-                  {% if  request.user  in problem.hard.all %}
-                    <a href="{% url 'cojung:hard' problem.id  %}" class="btn btn-sm btn-danger"> 어려워요</a>
-                        <span class="badge rounded-pill bg-danger">{{problem.hard.count}}</span>
-                  {% else %}
-                    <a href="{% url 'cojung:hard' problem.id  %}" class="btn btn-sm btn-outline-danger"> 어려워요</a>
-                        <span class="badge rounded-pill bg-danger">{{problem.hard.count}}</span>
-                  {%endif%} 
+                {% if request.user in problem.hard.all %}
+                  <a href="{% url 'cojung:hard' problem.id  %}" class="btn btn-sm btn-danger">
+                    어려워요</a>
+                  <span class="badge rounded-pill bg-danger">{{problem.hard.count}}</span>
+                {% else %}
+                  <a href="{% url 'cojung:hard' problem.id  %}" class="btn btn-sm btn-outline-danger">
+                    어려워요</a>
+                  <span class="badge rounded-pill bg-danger">{{problem.hard.count}}</span>
+                  {%endif%}
+                </div>
               </div>
+            </div>
           </div>
         </div>
-      </div>
-    </div>
-      <form action="{% url 'cojung:index' %}" method="post" class="my-3">
-      {% csrf_token %}
-        <input type="submit" value="질문하기" class="btn btn-info"/>
-      </form>
-      <form action="{% url 'cojung:resolve_create' problem.id %}" method="post" class="my-3">
-      {% csrf_token %}
-        <input type="submit" value="      다른 사용자 풀이 보러가기       " class="btn btn-primary"/>
-      </form>
-                <form action="{% url 'cojung:resolve_create' problem.id %}" method="post" class="my-3">
-              {% csrf_token %}
-              <div class="mb-3">
-                <label for="content" class="form-label">풀이내용</label>
-                <textarea {%
+        <form action="{% url 'cojung:index' %}" method="post" class="my-3">
+          {% csrf_token %}
+          <input type="submit" value="질문하기" class="btn btn-info"/>
+        </form>
+        <form action="{% url 'cojung:resolve_create' problem.id %}" method="post" class="my-3">
+          {% csrf_token %}
+          <input type="submit" value="      다른 사용자 풀이 보러가기       " class="btn btn-primary"/>
+        </form>
+        <form action="{% url 'cojung:resolve_create' problem.id %}" method="post" class="my-3">
+          {% csrf_token %}
+          <div class="mb-3">
+            <label for="content" class="form-label">풀이내용</label>
+            <textarea {%
                 if
                 not
                 user.is_authenticated
@@ -54,12 +65,39 @@
                 %}="disabled{%
                 endif
                 %}" name="content" id="content" class="form-control" rows="10"></textarea>
-              </div>
-              <input type="submit" value="풀이등록" class="btn btn-primary"/>
-            </form>
+          </div>
+          <input type="submit" value="풀이등록" class="btn btn-primary"/>
+        </form>
 
         <form action="{% url 'cojung:index' %}" method="post" class="my-3">
-      {% csrf_token %}
-        <input type="submit" value="메인화면" class="btn btn-dark"/>
+          {% csrf_token %}
+          <input type="submit" value="메인화면" class="btn btn-dark"/>
         </form>
-{% endblock %}
+      {% endblock %}
+
+      {% comment %} {% block script %}
+        <script>
+          function openTextFile() {
+            var input = document.createElement("input");
+
+            input.type = "file";
+            input.accept = "text/plain";
+
+            input.onchange = function (event) {
+              processFile(event.target.files[0]);
+            };
+
+            input.click();
+          }
+
+          function processFile(file) {
+            var reader = new FileReader();
+
+            reader.onload = function () {
+              output.innerText = reader.result;
+            };
+
+            reader.readAsText(file, "euc-kr");
+          }
+        </script>
+      {% endblock script %} {% endcomment %}
