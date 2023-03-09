@@ -57,7 +57,7 @@ class Comment(models.Model):
     content = models.TextField('댓글 내용')
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
     create_date =  models.DateTimeField('날짜')
-
+    subject = models.CharField(' 제목', max_length = 200)
     #ForeignKey
     resolve = models.ForeignKey(Resolve, null=True, blank=True, on_delete = models.CASCADE) # 문제 풀이에 대한 Comment
     answer = models.ForeignKey(Answer, null=True, blank=True, on_delete = models.CASCADE) # 질문 답변에 대한 Comment

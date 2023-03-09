@@ -24,18 +24,6 @@ def Resolve_create(request, problem_id):
     context = {'problem': problem, 'form': form}
     return render(request, 'cojung/resolve_list.html', context)
 
-def index(request):
-
-    resolveLst = Resolve.objects.order_by('-create_date')    
-
-    page = request.GET.get('page', '1') #페이지
-    paginator = Paginator(resolveLst, 10) #페이지당 10개씩
-    
-    pageObj = paginator.get_page(page)
-    context = {
-        'resolveLst' : pageObj, 
-    }
-    return render(request, 'cojung/resolve_list.html', context)
 
 @login_required(login_url='common:login')
 def comment_create_resolve(request, resolve_id):
