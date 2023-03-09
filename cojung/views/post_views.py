@@ -5,11 +5,13 @@ from django.utils import timezone
 def create_post(request):
     """cojung 글작성"""
     if request.method == 'POST':
-        form = ProblemForm(request.POST)
+        form = ProblemForm(request.POST, request.FILES)
+        # 여기서 request.FILES 하고 save 아래에서 하니까 아래 코드 한 줄 필요 없음!
         if form.is_valid():
             problem = form.save(commit=False)
             problem.create_date = timezone.now()
             problem.user = request.user
+            # problem.txtfile = request.FILES.get('txtfile') # 파일 업로드
             problem.save()
             return redirect('cojung:index')
     else:
@@ -21,7 +23,7 @@ def create_post(request):
 def create_question(request):
     """질문 작성"""
     if request.method == 'POST':
-        form = QuestionForm(request.POST)
+        form = QuestionForm(request.POST, request.FILES)
         if form.is_valid():
             question = form.save(commit=False)
             question.create_date = timezone.now()

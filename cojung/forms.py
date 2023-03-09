@@ -6,13 +6,13 @@ from cojung.models import Resolve, Problem, Question, Answer, Comment
 class ProblemForm(forms.ModelForm):
     class Meta:
         model = Problem
-        fields = ['subject', 'content']
+        fields = ['subject', 'content', 'txtfile']
 
 
 class QuestionForm(forms.ModelForm):
     class Meta:
         model = Question
-        fields = ['subject', 'content']
+        fields = ['subject', 'content', 'txtfile']
 
 
 class ResolveForm(forms.ModelForm):
