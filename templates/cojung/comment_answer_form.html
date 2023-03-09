@@ -1,10 +1,4 @@
-{% extends 'base.html' %}
-
-{% block content %}
-{% if question.answer_set.count > 0 %}<hr><br>{% endif %}
-
-<strong>답변 작성</strong>
-<form method = 'POST' action = "{% url 'cojung:answer_create' question.id %}">
+<form method = 'POST' action = "{% url 'cojung:comment_answer_create' answer.id %}">
     {% csrf_token %}
     
     {% if form.errors %}
@@ -19,10 +13,8 @@
     {% endif %}
     <div class = 'form-group'>
         <textarea {% if not user.is_authenticated %} disabled = 'disabled' {% endif %}
-            name = 'content' id = 'content' class = 'form-control' row = '16'></textarea>
+            name = 'content' id = 'content' class = 'form-control' row = '30'></textarea>
         <input {% if not user.is_authenticated  %} disabled = 'disabled'  {% endif %}
-        type = 'submit'value = '답변 등록'  class = 'btn btn-secondary'>
+        type = 'submit' value = '답글 등록'  class = 'btn btn-secondary mt-10'>
     </div>
-
 </form>
-{% endblock content %}
