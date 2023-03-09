@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import resolve_views, problem_views, question_views, post_views, vote_views, answer_views
+from .views import resolve_views, problem_views, question_views, post_views, vote_views, answer_views, comment_views
 
 app_name = 'cojung'
 
@@ -26,4 +26,8 @@ urlpatterns = [
     # 문제 업로드 / 질문 작성
     path('createpost/', post_views.create_post, name='create_post'),
     path('createquestion/', post_views.create_question, name='create_question'),
+    
+    #Comment Line --
+    path('comment/create/<int:answer_id>', comment_views.comment_answer_create, name = 'comment_answer_create')
+    # path('comment/create/<int:resolve_id>', comment_views.comment_resolve_create, name = 'comment_resolve_create')
 ]

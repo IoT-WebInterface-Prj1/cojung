@@ -54,7 +54,6 @@ class Resolve(models.Model):
         return f'{self.problem.subject} {self.problem.content}'
 
 class Comment(models.Model):
-    subject = models.CharField(' 제목', max_length = 200)
     content = models.TextField('댓글 내용')
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
     create_date =  models.DateTimeField('날짜')
@@ -64,4 +63,4 @@ class Comment(models.Model):
     answer = models.ForeignKey(Answer, null=True, blank=True, on_delete = models.CASCADE) # 질문 답변에 대한 Comment
     
     def __str__(self):
-        return f'{self.subject}'
+        return f'{self.content}'

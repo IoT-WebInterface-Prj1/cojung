@@ -14,8 +14,25 @@
                 <div style = "color:#c3c4c4">
                     {{answer.create_date}}
                 </div>
-                <div class = "bg-light" style = "padding: 0px 20px 20px 20px; white-space : pre-line;">
+                <div class = "bg-light" style = "padding:0px 20px 20px 20px; white-space : pre-line;">
                     {{answer.content}}
+                </div>
+                <!--Comment Line-->
+                <div style = "font-size: small">
+                    {% if answer.comment_set.count > 0 %}
+                        {% for comment in answer.comment_set.all %}
+                            <div style = 'padding: 20px 50px 20px 50px;'>
+                                <i class="fa-brands fa-replyd" style = 'color : #5e66d8'></i>{% if comment.user == answer.user %} <strong style = 'color:#eb5d56'>[작성자]</strong>{% endif %} <strong>{{comment.user.username}}</strong>
+                                    <div style = "color:#c3c4c4">{{comment.create_date}}</div>
+                                    <div style = 'padding-left : 30px; padding-right : 30px;'> {{comment.content}}</div>
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                    <!--답글 작성-->
+                    <div style = 'padding : 20px 50px'>
+                        <strong ><i class="fa-solid fa-reply"></i> 답글 달기 </strong>
+                        {% include './comment_answer_form.html' %}
+                    </div>
                 </div>
             </div>
         {% endfor %}
