@@ -16,10 +16,13 @@ urlpatterns = [
     #Question Line --
     path('question/', question_views.question, name = 'question'),
     path('question/<int:question_id>', question_views.question_detail, name = 'question_detail'),
-    #풀이 생성 
+    #풀이 생성 ,댓글
+    path('resolve/<int:problem_id>/',resolve_views.resolve_detail,name='resolve_detail'),
     path('resolve/<int:problem_id>/',resolve_views.Resolve_create,name='resolve_create'),
+    path('comment/create/resolve/<int:resolve_id>',resolve_views.comment_create_resolve,name='comment_create_resolve'),
+    path('createquestion/', post_views.create_question, name='create_question'),
 
     # 문제 업로드 / 질문 작성
     path('createpost/', post_views.create_post, name='create_post'),
-    path('createquestion/', post_views.create_question, name='create_question'),
+    path('createquestion2/', post_views.create_question_problem, name='create_question_problem'),
 ]

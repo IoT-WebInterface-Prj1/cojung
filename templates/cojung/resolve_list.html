@@ -30,6 +30,22 @@
       </div>
     </div>
   </div>
+    {% if resolve.comment_set.count > 0 %}
+      <div class="mt-3">
+        {% for comment in resolve.comment_set.all %}
+              <div class="comment py-2 text-muted">
+                <span style="white-space: pre-line;">{{ comment.content }}</span>
+                <span>
+                - {{ comment.user }}, {{ comment.create_date }}
+                </span>
+              </div>
+        {% endfor %}
+      </div>
+    {% endif %}
+      <div>
+      <a href="{% url 'cojung:comment_create_resolve' resolve.id  %}"
+         class="small"><small>댓글 추가 ..</small></a>
+      </div>
   {% endfor %}
 </div>
 {% endblock %}
