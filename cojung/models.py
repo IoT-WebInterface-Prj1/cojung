@@ -1,6 +1,13 @@
 from django.db import models
 from django.contrib.auth.models import User
 
+class Language(models.Model):
+    name = models.CharField('언어명',max_length=100)
+    
+    # print
+    def __str__(self):
+        return self.name
+
 # 문제
 class Problem(models.Model):
     subject = models.CharField('제목', max_length=200)
@@ -14,6 +21,9 @@ class Problem(models.Model):
 
     hard = models.ManyToManyField(User, null=True, blank=True, related_name='vote_hard_problem_user')
     easy = models.ManyToManyField(User, null=True, blank=True, related_name='vote_easy_problem_user')
+    
+    #languages
+    language = models.ManyToManyField(Language, null = True, blank=True, related_name = 'language')
 
 
     def __str__(self):
@@ -60,7 +70,7 @@ class Resolve(models.Model):
         return f'{self.problem.subject} {self.problem.content}'
 
 class Comment(models.Model):
-    content = models.TextField('댓글 내용')
+    content = models.TextField('댓글 내용', null = True, blank = True)
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
     create_date =  models.DateTimeField('날짜')
     subject = models.CharField(' 제목', max_length = 200)
