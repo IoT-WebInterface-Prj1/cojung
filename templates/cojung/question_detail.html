@@ -1,56 +1,58 @@
 <!--Question_detail-->
 {% extends 'base.html' %}
-
+{% load cojung_filter %}
 {% block content %}
-<!--사용자 오류 표시-->
-<div>
+  <!--사용자 오류 표시-->
+  <div>
     {% if messages %}
-        <div class='alert alert-danger my-3' role = 'alert'>
-                {% for message in messages %}
-                    <strong>{{message.tag}}</strong>
-                    <ul><li>{{message.message}}</li></ul>
-                {% endfor %}
-        </div>
+      <div class='alert alert-danger my-3' role='alert'>
+        {% for message in messages %}
+          <strong>{{message.tag}}</strong>
+          <ul>
+            <li>{{message.message}}</li>
+          </ul>
+        {% endfor %}
+      </div>
     {% endif %}
-</div>
+  </div>
 
-<div style = "margin-top:80px">
+  <div style="margin-top:80px">
     <!--목록으로 돌아가기 버튼-->
-    <a href = "{% url 'cojung:question' %}" class = 'btn'>
-        질문 목록으로 돌아가기
+    <a href="{% url 'cojung:question' %}" class='btn'>
+      질문 목록으로 돌아가기
     </a>
 
     <div>
-        <strong>
-            {{question.user.username}}
-        </strong>
-        <div style = "color:#c3c4c4">
-            {{question.create_date}}
-        </div>
+      <strong>
+        {{question.user.username}}
+      </strong>
+      <div style="color:#c3c4c4">
+        {{question.create_date}}
+      </div>
     </div>
 
     <!--제목-->
     <div>
-        {% if question.problem %}
-            <a style = "font-weight : bold; color: #85b3b1;" href = "{% url 'cojung:detail' question.problem_id %}">
-                [{{question.problem.subject}}]
-            </a>
-        {% endif %}
-        <span>
-            <h2 class = "border-bottom py-2">
-                {{question.subject}}
-            </h2>
-        </span>
+      {% if question.problem %}
+        <a style="font-weight : bold; color: #85b3b1;" href="{% url 'cojung:detail' question.problem_id %}">
+          [{{question.problem.subject}}]
+        </a>
+      {% endif %}
+      <span>
+        <h2 class="border-bottom py-2">
+          {{question.subject}}
+        </h2>
+      </span>
     </div>
     <br>
 
-    <div style = "font-size : large">
-        {{question.content}}
+    <div style="font-size : large">
+      {{question.content|mark}}
     </div>
     {% if question.txtfile %}
-        <div>
-            <a href="{{ question.txtfile.url }}" class="btn btn-primary">파일보기</a>
-        </div>
+      <div>
+        <a href="{{ question.txtfile.url }}" class="btn btn-primary">파일보기</a>
+      </div>
     {% endif %}
     <br>
 
@@ -62,5 +64,5 @@
 
     <!--답변 작성-->
     {% include './answer_form.html' %}
-</div>
+  </div>
 {% endblock content %}
