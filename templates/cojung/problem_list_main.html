@@ -5,42 +5,63 @@
 
 {% block content %}
   <div class='container-fluid' style='margin-top : 80px'>
-    <!--정렬창/검색 추가-->
+    <!--정렬창/카테고리/검색 추가-->
     <div class = 'row justify-content-between my-3' style = 'margin-bottom : 10px'>
       <!--정렬창 추가-->
-      <div class = 'col-2'>
-        <select class = 'form-control so'>
-          <!--최신순-->
-          <option value = 'recent' 
-            {% if so == 'recent' %}
+      <div class = 'col-2 row justify-content-left'>
+        <div class = 'col-9'>
+          <select class = 'form-control so'>
+            <!--최신순-->
+            <option value = 'recent' 
+              {% if so == 'recent' %}
+                selected
+              {% endif %}>
+              최신순
+            </option>
+            <!--어려운순-->
+            <option value = 'hard'
+              {% if so == 'hard' %}
+                selected
+              {% endif %}>
+              어려운순
+            </option>
+            <!--쉬운순-->
+            <option value = 'easy'
+              {% if so == 'easy' %}
+                selected
+              {% endif %}>
+              쉬운순
+            </option>
+            <!--풀이순-->
+            <option value = 'resolve'
+            {% if so == 'resolve' %}
               selected
             {% endif %}>
-            최신순
-          </option>
-          <!--어려운순-->
-          <option value = 'hard'
-            {% if so == 'hard' %}
-              selected
-            {% endif %}>
-            어려운순
-          </option>
-          <!--쉬운순-->
-          <option value = 'easy'
-            {% if so == 'easy' %}
-              selected
-            {% endif %}>
-            쉬운순
-          </option>
-          <!--풀이순-->
-          <option value = 'resolve'
-          {% if so == 'resolve' %}
-            selected
-          {% endif %}>
-            풀이가 많은순
-          </option>
-        </select>
+              풀이가 많은순
+            </option>
+          </select>
+        </div>
+        <!--정령창 추가 끝-->
+        <!--카테고리 추가-->
+        <div class="col-1 dropdown">
+          <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+            언어
+          </button>
+          <form id = 'langform' name = 'lang' action = "{% url 'cojung:index' %}" method = 'get'>
+            {% comment %} {% csrf_token %} {% endcomment %}
+            
+            <div class="dropdown-menu form-check">
+              {% for lang in langAllLst %}
+                <label class = 'dropdown-item form-check-label'>
+                  <input type='checkbox' class = 'form-check-input check-lang' value = {{lang.name}} name = 'lang' {% if lang.name in langLst %} checked {% endif %}> {{lang.name}}
+                </label>
+              {% endfor %}
+            </div>
+          </form>
+        </div>
       </div>
-      <!--정렬창 추가 끝-->
+      <!--카테고리 추가 끝-->
+
       <!--검색창 추가-->
       <div class = 'col-4 '>
         <div class = 'input-group'>
@@ -49,10 +70,11 @@
             <button class = 'btn btn-outline-secondary' type = 'button' id = 'btn_search'>검색</button>
           </div>
         </div>
-        <!--검색창 추가 끝-->
       </div>
+      <!--검색창 추가 끝-->
     </div>
-    <!--정렬창/검색 추가 끝-->
+    <!--정렬창/카테고리/검색 추가 끝-->
+
     <!--문제/질문 리스트-->
     <table class='table table-hover table-bordered'>
       <thead>
@@ -130,6 +152,10 @@
         $("#so").val($(this).val());
         $("#page").val(1);
         $("#searchform").submit();
+      });
+
+      $(".check-lang").on('change', function() {
+        $("#langform").submit();
       });
     });
   </script>
