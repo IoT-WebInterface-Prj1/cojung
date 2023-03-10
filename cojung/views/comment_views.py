@@ -22,5 +22,6 @@ def comment_answer_create(request, answer_id):
         form = CommentForm()
         
     context = {'answer' : answer, 'form' : form}
-    
+
     return render(request, 'cojung/answer_listl.html', context)
+

@@ -15,7 +15,7 @@ def Resolve_create(request, problem_id):
         form = ResolveForm(request.POST)
         if form.is_valid():
             resolve = form.save(commit=False)
-            resolve.author = request.user  # author 속성에 로그인 계정 저장
+            resolve.user = request.user  # author 속성에 로그인 계정 저장
             resolve.create_date = timezone.now()
             resolve.problem = problem
             resolve.save()
@@ -53,3 +53,32 @@ def resolve_detail(request,problem_id):
     problem = get_object_or_404(Problem, pk=problem_id)
     context = {'problem':problem}
     return render(request,'cojung/resolve_list.html',context)
+
+@login_required(login_url='common:login')
+def resolve_modify(request, resolve_id):
+    resolve = get_object_or_404(Resolve, pk=resolve_id)
+    if request.user != resolve.user:
+        messages.error(request, '수정권한이 없습니다')
+        return redirect('cojung:resolve_detail', problem_id=resolve.problem.id)
+    if request.method == "POST":
+        form = ResolveForm(request.POST, instance=resolve)
+        if form.is_valid():
+            resovle = form.save(commit=False)
+            resolve.modify_date = timezone.now()
+            resolve.save()
+            return redirect('{}#resolve_{}'.format(
+                resolve_url('cojung:resolve_detail', problem_id=resolve.problem.id), resolve.id))
+    else:
+        form = ResolveForm(instance=resolve)
+    context = {'resolve': resolve, 'form': form}
+    return render(request, 'cojung/resolve_form.html', context)
+
+
+@login_required(login_url='common:login')
+def resolve_delete(request, resolve_id):
+    resolve = get_object_or_404(Resolve, pk=resolve_id)
+    if request.user != resolve.user:
+        messages.error(request, '삭제권한이 없습니다')
+    else:
+        resolve.delete()
+    return redirect('cojung:resolve_detail', problem_id=resolve.problem.id)
