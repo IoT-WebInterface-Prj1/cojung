@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import resolve_views, problem_views, question_views, post_views, vote_views, answer_views, comment_views
+from .views import resolve_views, problem_views, question_views, post_views, vote_views, answer_views, comment_views, language_views
 
 app_name = 'cojung'
 
@@ -34,12 +34,14 @@ urlpatterns = [
     path('resolve/modify/<int:resolve_id>/', resolve_views.resolve_modify, name='resolve_modify'),
     path('resolve/delete/<int:resolve_id>/', resolve_views.resolve_delete, name='resolve_delete'),
     path('comment/create/resolve/<int:resolve_id>',resolve_views.comment_create_resolve,name='comment_create_resolve'),
-    
     path('createquestion/', post_views.create_question, name='create_question'),
     path('problem/modify/<int:problem_id>/', problem_views.problem_modify, name='problem_modify'),
     path('problem/delete/<int:problem_id>/', problem_views.problem_delete, name='problem_delete'),
 
+
     # 문제 업로드 / 질문 작성
-    path('createpost/', post_views.create_post, name='create_post'),
     path('createquestion2/', post_views.create_question_problem, name='create_question_problem'),
+
+    # 언어 선택
+    # path('language/selection/<int:problem_id>/', language_views.select_python, name='select_python'),
 ]
