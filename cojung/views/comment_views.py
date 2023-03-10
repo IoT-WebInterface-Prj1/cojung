@@ -17,10 +17,11 @@ def comment_answer_create(request, answer_id):
             comment.answer = answer
             comment.save()
             
-            return redirect('cojung:problem_detail', problem_id = answer.question.id)
+            return redirect('cojung:question_detail', question_id = answer.question.id)
     else:
         form = CommentForm()
         
     context = {'answer' : answer, 'form' : form}
-    
+
     return render(request, 'cojung/answer_listl.html', context)
+
