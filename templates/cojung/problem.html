@@ -64,10 +64,15 @@
         </div>
       </div>
     </div>
-      <form action="{% url 'cojung:create_question_problem' %}" method="post" class="my-3">
-      {% csrf_token %}
-        <input type="submit" value="질문하기" class="btn btn-info"/>
-      </form>
+    <div class="btn-group">
+            <form action="{% url 'cojung:create_question_problem' %}" method="post">
+              {% csrf_token %}
+              <input type="submit" value="질문하기" class="btn btn-warning"/>
+            </form>
+            <form id = 'searchForm' method='get' action = "{% url 'cojung:question' %}">
+               <button id= 'btn' name= 'problem_num' value = {{ problem.id }} class = "btn btn-warning">질문보러가기</button> 
+            </form>
+    </div>
       <form action="{% url 'cojung:resolve_create' problem.id %}" method="post" class="my-3">
       {% csrf_token %}
         <input type="submit" value="      다른 사용자 풀이 보러가기       " class="btn btn-primary"/>
