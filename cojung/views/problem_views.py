@@ -1,5 +1,5 @@
 from django.shortcuts import render, get_object_or_404
-from cojung.models import Problem
+from cojung.models import Problem, Language
 from django.core.paginator import Paginator
 from django.db.models import Q, Count
 
@@ -21,6 +21,12 @@ def index(request):
     # ==============
     kw = request.GET.get('kw', '')
     # ==============
+    # 카테고리 기능 추가 
+    # ==============
+    langAllLst = Language.objects.all() # 전체 언어 종류
+    langLst = request.GET.getlist('lang', '') #선택한 언어 종류
+
+    # ==============
     # 정렬처리
     # ==============
     # problemLst = Problem.objects.order_by('-create_date')   
@@ -34,6 +40,12 @@ def index(request):
         problemLst = Problem.objects.annotate(num_resolve = Count('resolve')).order_by('-num_resolve', '-create_date')
     
     # ==============
+    # 카테고리 기능 처리 
+    # ==============
+    if langLst:
+        problemLst = Problem.objects.filter(language__name__in = langLst).distinct()
+        
+    # ==============
     # 조회 처리
     # ==============
     if kw :
@@ -46,7 +58,7 @@ def index(request):
     # ==============
     # 페이징 처리
     # ==============
-    paginator = Paginator(problemLst, 10) #페이지당 10개씩
+    paginator = Paginator(problemLst, 1) #페이지당 10개씩
     
     pageObj = paginator.get_page(page)
     
@@ -57,6 +69,8 @@ def index(request):
         'page' : page,
         'so' : so, 
         'kw': kw,
+        'langAllLst' : langAllLst,
+        'langLst' : langLst,
     }
     
     return render(request, 'cojung/problem_list_main.html', context)

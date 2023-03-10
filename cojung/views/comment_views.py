@@ -17,31 +17,10 @@ def comment_answer_create(request, answer_id):
             comment.answer = answer
             comment.save()
             
-            return redirect('cojung:problem_detail', problem_id = answer.question.id)
+            return redirect('cojung:question_detail', question_id = answer.question.id)
     else:
         form = CommentForm()
         
     context = {'answer' : answer, 'form' : form}
     
     return render(request, 'cojung/answer_listl.html', context)
-
-@login_required(login_url='common:login')
-def comment_create_resolve(request, resolve_id):
-    """
-    pybo 답글댓글등록
-    """
-    resolve = get_object_or_404(Resolve, pk=resolve_id)
-    if request.method == "POST":
-        form = CommentForm(request.POST)
-        if form.is_valid():
-            comment = form.save(commit=False)
-            comment.user = request.user
-            comment.create_date = timezone.now()
-            comment.resolve = resolve
-            comment.save()
-            return redirect('{}#comment_{}'.format(
-                resolve_url('cojung:resolve_detail', problem_id=comment.resolve.problem.id), comment.id))
-    else:
-        form = CommentForm()
-    context = {'form': form}
-    return render(request, 'cojung/comment_form.html', context)
