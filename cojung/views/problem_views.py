@@ -58,7 +58,7 @@ def index(request):
     # ==============
     # 페이징 처리
     # ==============
-    paginator = Paginator(problemLst, 10) #페이지당 10개씩
+    paginator = Paginator(problemLst, 1) #페이지당 10개씩
     
     pageObj = paginator.get_page(page)
     

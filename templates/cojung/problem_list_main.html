@@ -48,8 +48,6 @@
             언어
           </button>
           <form id = 'langform' name = 'lang' action = "{% url 'cojung:index' %}" method = 'get'>
-            {% comment %} {% csrf_token %} {% endcomment %}
-            
             <div class="dropdown-menu form-check">
               {% for lang in langAllLst %}
                 <label class = 'dropdown-item form-check-label'>
@@ -153,8 +151,12 @@
         $("#page").val(1);
         $("#searchform").submit();
       });
+      /*카테고리 처리*/
+      $(".check-lang").on('change', function() { /*form-data 객체 
+        let searchForm = document.getElementById('searchform');
+         let f = new FormData(searchForm);
 
-      $(".check-lang").on('change', function() {
+         f.sumbit();*/
         $("#langform").submit();
       });
     });
