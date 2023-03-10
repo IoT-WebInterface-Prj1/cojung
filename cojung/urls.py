@@ -29,10 +29,15 @@ urlpatterns = [
     path('comment/create/<int:answer_id>', comment_views.comment_answer_create, name = 'comment_answer_create'),
 
     #풀이 생성 ,댓글
-    path('resolve/<int:problem_id>/',resolve_views.resolve_detail,name='resolve_detail'),
+    path('resolve/detail/<int:problem_id>/',resolve_views.resolve_detail,name='resolve_detail'),
     path('resolve/<int:problem_id>/',resolve_views.Resolve_create,name='resolve_create'),
+    path('resolve/modify/<int:resolve_id>/', resolve_views.resolve_modify, name='resolve_modify'),
+    path('resolve/delete/<int:resolve_id>/', resolve_views.resolve_delete, name='resolve_delete'),
     path('comment/create/resolve/<int:resolve_id>',resolve_views.comment_create_resolve,name='comment_create_resolve'),
+    
     path('createquestion/', post_views.create_question, name='create_question'),
+    path('problem/modify/<int:problem_id>/', problem_views.problem_modify, name='problem_modify'),
+    path('problem/delete/<int:problem_id>/', problem_views.problem_delete, name='problem_delete'),
 
     # 문제 업로드 / 질문 작성
     path('createpost/', post_views.create_post, name='create_post'),
