@@ -1,8 +1,13 @@
-from django.shortcuts import render, get_object_or_404
-from cojung.models import Problem
+
+from django.shortcuts import render, get_object_or_404, redirect
+from cojung.models import Problem, Language
 from django.core.paginator import Paginator
 from django.db.models import Q, Count
+from django.contrib.auth.decorators import login_required
+from django.contrib import messages
+from django.utils import timezone
 
+from cojung.forms import ProblemForm
 # Create your views here.
 def index(request):
     """
@@ -21,6 +26,12 @@ def index(request):
     # ==============
     kw = request.GET.get('kw', '')
     # ==============
+    # 카테고리 기능 추가 
+    # ==============
+    langAllLst = Language.objects.all() # 전체 언어 종류
+    langLst = request.GET.getlist('lang', '') #선택한 언어 종류
+
+    # ==============
     # 정렬처리
     # ==============
     # problemLst = Problem.objects.order_by('-create_date')   
@@ -34,6 +45,12 @@ def index(request):
         problemLst = Problem.objects.annotate(num_resolve = Count('resolve')).order_by('-num_resolve', '-create_date')
     
     # ==============
+    # 카테고리 기능 처리 
+    # ==============
+    if langLst:
+        problemLst = Problem.objects.filter(language__name__in = langLst).distinct()
+        
+    # ==============
     # 조회 처리
     # ==============
     if kw :
@@ -46,7 +63,7 @@ def index(request):
     # ==============
     # 페이징 처리
     # ==============
-    paginator = Paginator(problemLst, 10) #페이지당 10개씩
+    paginator = Paginator(problemLst, 1) #페이지당 10개씩
     
     pageObj = paginator.get_page(page)
     
@@ -57,6 +74,8 @@ def index(request):
         'page' : page,
         'so' : so, 
         'kw': kw,
+        'langAllLst' : langAllLst,
+        'langLst' : langLst,
     }
     
     return render(request, 'cojung/problem_list_main.html', context)
@@ -73,3 +92,31 @@ def detail(request,problem_id):
 #     problem = Problem.subject.get(id=problem_id)
 #     context = {'contents':problem}
 #     return render(request,'cojung/problem.html',context) 
+
+@login_required(login_url='common:login')
+def problem_modify(request, problem_id):
+    problem = get_object_or_404(Problem, pk=problem_id)
+    if request.user != problem.user:
+        messages.error(request, '수정권한이 없습니다')
+        return redirect('cojung:detail', problem_id=problem.id)
+    if request.method == "POST":
+        form = ProblemForm(request.POST, instance=problem)
+        if form.is_valid():
+            problem = form.save(commit=False)
+            problem.modify_date = timezone.now()  # 수정일시 저장
+            problem.save()
+            return redirect('cojung:detail', problem_id=problem.id)
+    else:
+        form = ProblemForm(instance=problem)
+    context = {'form': form}
+    return render(request, 'cojung/problem_form.html', context)
+
+
+@login_required(login_url='common:login')
+def problem_delete(request, problem_id):
+    problem = get_object_or_404(Problem, pk=problem_id)
+    if request.user != problem.user:
+        messages.error(request, '삭제권한이 없습니다')
+        return redirect('cojung:detail', problem_id=problem.id)
+    problem.delete()
+    return redirect('cojung:index')
