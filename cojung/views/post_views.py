@@ -56,7 +56,7 @@ def create_question_problem(request, problem_id):
     """질문 작성"""
     problem = get_object_or_404(Problem, pk=problem_id)
     if request.method == 'POST':
-        form = QuestionForm(request.POST)
+        form = QuestionForm(request.POST, request.FILES)
         if form.is_valid():
             question = form.save(commit=False)
             question.create_date = timezone.now()

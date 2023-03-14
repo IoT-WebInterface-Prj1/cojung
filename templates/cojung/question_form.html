@@ -25,11 +25,15 @@
         <textarea name="content" rows="10" class="form-control" id="content">{{ form.content.value|default_if_none:'' }}</textarea>
       </div>
       <br>
-      <div class="form-group">
+      {% if question.txtfile != null %}
         <label for="txtfile">첨부파일</label>
-        <input type="file" class="form-control" name="txtfile" id="txtfile">
-      </div>
-
+          {{question.txtfile}}
+      {% else %}
+        <div class="form-group">
+          <label for="txtfile">첨부파일</label>
+          <input type="file" class="form-control" name="txtfile" id="txtfile">
+        </div>
+      {% endif %}
       <br>
       <button type="submit" class="btn btn-primary">
         <i class="fa-solid fa-check"></i>
