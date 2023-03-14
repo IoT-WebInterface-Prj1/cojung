@@ -1,15 +1,15 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load bootstrap4 %}
 
 {% block content %}
 
   <div style="width:500px; margin-top:80px" class="mx-auto">
     <div class="border-bottom">
-      <h4><b>문제 업로드</b></h4>
+      <h4>
+        <b>문제 업로드</b>
+      </h4>
     </div>
-
-    <!-- 언어 선택 버튼 -->
-    {% include 'language_selection.html' %}
 
     <form method="post" class="post-form my-3" enctype="multipart/form-data">
       <!-- enctype 지정해줘야함 -->
@@ -17,6 +17,20 @@
 
       {% include 'form_errors.html' %}
 
+      <!-- 언어 선택 버튼 -->
+      <div class="form-group">
+        <label for="language">프로그래밍 언어 선택</label>
+        <br>
+        <input type="checkbox" name="language" class="form-check-input" value="1"> Python
+        <input type="checkbox" name="language" class="form-check-input" value="2"> C
+        <input type="checkbox" name="language" class="form-check-input" value="3"> C++
+        <input type="checkbox" name="language" class="form-check-input" value="4"> C#
+        <input type="checkbox" name="language" class="form-check-input" value="5"> Java
+        <input type="checkbox" name="language" class="form-check-input" value="6"> Kotlin
+        <input type="checkbox" name="language" class="form-check-input" value="7"> MySQL
+      </div>
+      <br>
+      <!-- ********************************************************************************* -->
       <div class="form-group">
         <label for="subject">제목</label>
         <input type="text" name="subject" class="form-control" required="required" id="subject" value="{{ form.subject.value|default_if_none:'' }} ">
@@ -30,14 +44,12 @@
       <div class="form-group">
         <label for="txtfile">첨부파일</label>
         <input type="file" class="form-control" name="txtfile" id="txtfile">
-        {% comment %}
-        !!!! 중요 >> name 값이 model의 field명과 같아야 함
-        다르면 업로드 안됩니다...
-        name: 서버와 연결하는 작업할 때 / id: css나 js ==> 이름 맞춰주기!
-        !!!! 중요 >> .txt 파일 저장할 때 '인코딩=ANSI or EUC-KR'로 해주세요!
-        UTF-8 하면 인코딩 깨집니다 ㅠㅠ
-        {% endcomment %}
       </div>
+      <!--
+        !!!! 중요 >> name 값이 model의 field명과 같아야 함 다르면 업로드 안됩니다...
+        name: 서버와 연결하는 작업할 때 / id: css나 js ==> 이름 맞춰주기!
+        !!!! 중요 >> .txt 파일 저장할 때 '인코딩=ANSI or EUC-KR'로 해주세요! UTF-8 하면 인코딩 깨집니다 ㅠㅠ 
+      -->
 
       <br>
       <button type="submit" class="btn btn-primary">
