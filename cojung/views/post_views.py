@@ -2,7 +2,9 @@ from django.shortcuts import render, redirect, get_object_or_404
 from cojung.forms import ProblemForm, QuestionForm
 from cojung.models import Problem
 from django.utils import timezone
+from django.contrib.auth.decorators import login_required
 
+@login_required(login_url='member:login')
 def create_post(request):
     """cojung 글작성"""
     if request.method == 'POST':
@@ -20,7 +22,7 @@ def create_post(request):
         
     return render(request, 'cojung/problem_form.html', {'form': form})
 
-
+@login_required(login_url='member:login')
 def create_question(request):
     """질문 작성"""
     if request.method == 'POST':
@@ -36,6 +38,7 @@ def create_question(request):
         
     return render(request, 'cojung/question_form.html', {'form': form})
 
+@login_required(login_url='member:login')
 def create_question_problem(request, problem_id):
     """질문 작성"""
     problem = get_object_or_404(Problem, pk=problem_id)
