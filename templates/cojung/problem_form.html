@@ -21,13 +21,9 @@
       <div class="form-group">
         <label for="language">프로그래밍 언어 선택</label>
         <br>
-        <input type="checkbox" name="language" class="form-check-input" value="1"> Python
-        <input type="checkbox" name="language" class="form-check-input" value="2"> C
-        <input type="checkbox" name="language" class="form-check-input" value="3"> C++
-        <input type="checkbox" name="language" class="form-check-input" value="4"> C#
-        <input type="checkbox" name="language" class="form-check-input" value="5"> Java
-        <input type="checkbox" name="language" class="form-check-input" value="6"> Kotlin
-        <input type="checkbox" name="language" class="form-check-input" value="7"> MySQL
+        {% for language in language_list %}
+        <input type="checkbox" name="language" class="form-check-input" value="{{language.id}}"> {{language.name}}
+        {% endfor %}
       </div>
       <br>
       <!-- ********************************************************************************* -->
