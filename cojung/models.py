@@ -14,11 +14,12 @@ class Problem(models.Model):
     content = models.TextField('내용')
     create_date = models.DateTimeField('생성일')
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='problem_author')
-    #vote
+    modify_date = models.DateTimeField(null=True,blank=True)
+
 
     # 파일 업로드
     txtfile = models.FileField('첨부파일', null=True, upload_to="media", blank=True)
-
+    #vote
     hard = models.ManyToManyField(User, null=True, blank=True, related_name='vote_hard_problem_user')
     easy = models.ManyToManyField(User, null=True, blank=True, related_name='vote_easy_problem_user')
     
@@ -61,6 +62,7 @@ class Resolve(models.Model):
     content = models.TextField('풀이 내용')
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
     create_date =  models.DateTimeField('날짜')
+    modify_date = models.DateTimeField(null=True,blank=True)
     
     #ForeignKey
     problem = models.ForeignKey(Problem, on_delete = models.CASCADE)
@@ -77,6 +79,6 @@ class Comment(models.Model):
     #ForeignKey
     resolve = models.ForeignKey(Resolve, null=True, blank=True, on_delete = models.CASCADE) # 문제 풀이에 대한 Comment
     answer = models.ForeignKey(Answer, null=True, blank=True, on_delete = models.CASCADE) # 질문 답변에 대한 Comment
-    
+    modify_date = models.DateTimeField(null=True,blank=True)    
     def __str__(self):
         return f'{self.content}'
