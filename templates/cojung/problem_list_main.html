@@ -125,6 +125,11 @@
     <input type = 'hidden' id = 'kw' name = 'kw' value = "{{kw}}">
     <input type = 'hidden' id = 'page' name = 'page' value = "{{page}}">
     <input type = 'hidden' id = 'so' name = 'so' value = "{{so}}">
+    <div id = 'lang-link' style = 'visibility:hidden'>
+      {% for lang in langAllLst %}
+        <input type = 'checkbox' class = 'form-check-input check-lang' value = {{lang.name}} name = 'lang' {% if lang.name in langLst %} checked {% endif %}> {{lang.name}}
+      {% endfor %}
+    </div>
   </form>
   <!--============-->
   <!--Form End-->
@@ -152,11 +157,7 @@
         $("#searchform").submit();
       });
       /*카테고리 처리*/
-      $(".check-lang").on('change', function() { /*form-data 객체 
-        let searchForm = document.getElementById('searchform');
-         let f = new FormData(searchForm);
-
-         f.sumbit();*/
+      $(".check-lang").on('change', function() { 
         $("#langform").submit();
       });
     });
