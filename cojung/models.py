@@ -16,7 +16,6 @@ class Problem(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='problem_author')
     modify_date = models.DateTimeField(null=True,blank=True)
 
-
     # 파일 업로드
     txtfile = models.FileField('첨부파일', null=True, upload_to="media", blank=True)
     #vote
@@ -35,6 +34,7 @@ class Question(models.Model):
     subject = models.CharField('제목', max_length=200)
     content = models.TextField('내용')
     create_date = models.DateTimeField('생성일')
+    modify_date = models.DateTimeField('수정일', null=True,blank=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     # FK
     problem = models.ForeignKey(Problem, null=True, blank=True, on_delete=models.CASCADE)
@@ -44,10 +44,10 @@ class Question(models.Model):
     def __str__(self):
         return f'Problem : {self.problem} / {self.subject}'
 
-
 class Answer(models.Model):
     content = models.TextField('질문 답변')
-    create_date = models.DateTimeField()
+    create_date = models.DateTimeField('작성일')
+    modify_date = models.DateTimeField('수정일', null=True,blank=True)
     user = models.ForeignKey(User,on_delete=models.CASCADE, null=True)
         
     # FK

@@ -16,6 +16,7 @@ def index(request):
     """
     코딩의 정석 "Problem" 목록 출력
     """
+    problemLst = Problem.objects.order_by('-create_date')
     page = request.GET.get('page', '1') #페이지
     # ==============
     # 정렬기능 추가 
@@ -30,25 +31,25 @@ def index(request):
     # ==============
     langAllLst = Language.objects.all() # 전체 언어 종류
     langLst = request.GET.getlist('lang', '') #선택한 언어 종류
-
-    # ==============
-    # 정렬처리
-    # ==============
-    # problemLst = Problem.objects.order_by('-create_date')   
-    if so == 'recent':
-        problemLst = Problem.objects.order_by('-create_date')
-    elif so == 'hard':
-        problemLst = Problem.objects.annotate(num_hard = Count('hard')).order_by('-num_hard', '-create_date')
-    elif so == 'easy':
-        problemLst = Problem.objects.annotate(num_easy = Count('easy')).order_by('-num_easy', '-create_date')
-    elif so == 'resolve':
-        problemLst = Problem.objects.annotate(num_resolve = Count('resolve')).order_by('-num_resolve', '-create_date')
     
     # ==============
     # 카테고리 기능 처리 
     # ==============
+    print(langLst)
     if langLst:
         problemLst = Problem.objects.filter(language__name__in = langLst).distinct()
+            
+    # ==============
+    # 정렬처리
+    # ==============
+    if so == 'recent':
+        problemLst = problemLst.order_by('-create_date')
+    elif so == 'hard':
+        problemLst = problemLst.annotate(num_hard = Count('hard')).order_by('-num_hard', '-create_date')
+    elif so == 'easy':
+        problemLst = problemLst.annotate(num_easy = Count('easy')).order_by('-num_easy', '-create_date')
+    elif so == 'resolve':
+        problemLst = problemLst.annotate(num_resolve = Count('resolve')).order_by('-num_resolve', '-create_date')
         
     # ==============
     # 조회 처리

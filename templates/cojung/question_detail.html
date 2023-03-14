@@ -26,9 +26,15 @@
       <strong>
         {{question.user.username}}
       </strong>
-      <div style="color:#c3c4c4">
-        {{question.create_date}}
-      </div>
+      {% if question.modify_date %}
+        <div style="color:#c3c4c4">
+          {{question.modify_date}}(수정됨)
+        </div>
+      {% else %}
+        <div style="color:#c3c4c4">
+          {{question.create_date}}
+        </div>
+      {% endif %}
     </div>
 
     <!--제목-->
@@ -38,11 +44,9 @@
           [{{question.problem.subject}}]
         </a>
       {% endif %}
-      <span>
-        <h2 class="border-bottom py-2">
-          {{question.subject}}
-        </h2>
-      </span>
+      <h2 class="border-bottom py-2">
+        {{question.subject}}
+      </h2>
     </div>
     <br>
 
@@ -57,6 +61,12 @@
     <br>
 
     <hr>
+    {% if request.user == question.user %}
+      <div class = 'd-flex justify-content-end'>
+        <a href="{% url 'cojung:question_modify' question.id %}" class="btn btn-outline-secondary" role="button" style = "margin: 0px 2px">수정</a>
+        <a href="#" data-uri = "{% url 'cojung:question_delete' question.id %}" class="delete_question btn btn-outline-danger" role="button" style = "margin: 0px 2px">삭제</a>
+      </div>
+    {% endif %}
     <br>
 
     <!--답변 목록-->
@@ -66,3 +76,28 @@
     {% include './answer_form.html' %}
   </div>
 {% endblock content %}
+
+<!--=============-->
+<!--Script 영역-->
+{% block script %}
+<script>
+  $(document).ready(function() {
+    $(".delete_question").on("click", function() {
+      if (confirm("정말로 삭제하시겠습니까?")) {
+        location.href = $(this).data('uri');
+      }
+    });
+    $(".delete_answer").on("click", function() {
+      if (confirm("정말로 삭제하시겠습니까?")) {
+        location.href = $(this).data('uri');
+      }
+    });
+    $(".delete_comment").on("click", function() {
+      if (confirm("정말로 삭제하시겠습니까?")) {
+        location.href = $(this).data('uri');
+      }
+    });
+  });
+</script>
+{% endblock script %}
+<!--=============-->

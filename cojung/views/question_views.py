@@ -1,7 +1,11 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, redirect, get_object_or_404
 from ..models import Question
-from django.db.models import Q, Count
+from..forms import QuestionForm
+from django.db.models import Q
 from django.core.paginator import Paginator
+from django.contrib.auth.decorators import login_required
+from django.contrib import messages
+from django.utils import timezone
 
 # ========
 # Question Line
@@ -64,3 +68,41 @@ def question_detail(request, question_id):
     }
     
     return render(request, 'cojung/question_detail.html', context)
+
+@login_required(login_url='member:login')
+def question_modify(request, question_id):
+    """
+    "Question" 게시글 수정
+    """
+    question = get_object_or_404(Question, pk = question_id)
+    if request.user != question.user:
+        messages.error(request, '수정권한이 없습니다 !')
+        return redirect('cojung:question_detail', question_id = question.id)
+    
+    if request.method == "POST":
+        form = QuestionForm(request.POST, instance=question)
+        if form.is_valid():
+            question = form.save(commit=False)
+            question.user = request.user
+            question.modify_date = timezone.now()
+            question.save()
+            return redirect('cojung:question_detail', question_id = question.id)
+    else:
+        form = QuestionForm(instance=question)
+        
+    context = {'form' : form}
+    
+    return render(request, 'cojung/question_form.html', context) 
+    
+@login_required(login_url='member:login')
+def question_delete(request, question_id):
+    """
+    "Question" 삭제 기능
+    """
+    question = get_object_or_404(Question, pk=question_id)
+    if request.user != question.user:
+        messages.error(request, '삭제권한이 없습니다 !')
+        return redirect('cojung:question_detail', question_id = question.id)
+    
+    question.delete()
+    return redirect('cojung:question')
