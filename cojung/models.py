@@ -1,5 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
+import os
+import config.settings as settings
 
 class Language(models.Model):
     name = models.CharField('언어명',max_length=100)
@@ -25,10 +27,14 @@ class Problem(models.Model):
     #languages
     language = models.ManyToManyField(Language, null = True, blank=True, related_name = 'language')
 
-
     def __str__(self):
         return f'{self.subject}'
-
+    
+    #게시글 삭제시 파일 삭제
+    def delete(self, *args, **kargs):
+        if self.txtfile:
+            os.remove(os.path.join(settings.MEDIA_ROOT, self.txtfile.path))
+        super(Problem, self).delete(*args, **kargs)
 
 class Question(models.Model):
     subject = models.CharField('제목', max_length=200)
@@ -43,6 +49,12 @@ class Question(models.Model):
     
     def __str__(self):
         return f'Problem : {self.problem} / {self.subject}'
+    
+    #게시글 삭제시 파일 삭제
+    def delete(self, *args, **kargs):
+        if self.txtfile:
+            os.remove(os.path.join(settings.MEDIA_ROOT, self.txtfile.path))
+        super(Question, self).delete(*args, **kargs)
 
 class Answer(models.Model):
     content = models.TextField('질문 답변')
