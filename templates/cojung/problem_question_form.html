@@ -9,7 +9,7 @@
     </div>
     <br>
 
-    <form method="post" class="post-form my-3">
+    <form method="post" class="post-form my-3" enctype="multipart/form-data">
       {% csrf_token %}
 
       {% include 'form_errors.html' %}
