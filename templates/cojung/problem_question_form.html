@@ -3,7 +3,7 @@
 
 {% block content %}
 
-  <div style="width:500px" class="mx-auto">
+  <div style="margin-top:80px; width:500px;" class="mx-auto">
     <div class="border-bottom">
       <h4>질문작성</h4>
     </div>
@@ -22,6 +22,12 @@
       <div class="form-group">
         <label for="content">내용</label>
         <textarea name="content" rows="10" class="form-control" id="content">{{ form.content.value|default_if_none:'' }}</textarea>
+      </div>
+      <br>
+
+      <div class="form-group">
+        <label for="txtfile">첨부파일</label>
+        <input type="file" class="form-control" name="txtfile" id="txtfile">
       </div>
 
       <br>
