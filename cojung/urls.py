@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import resolve_views, problem_views, question_views, post_views, vote_views, answer_views, comment_views, language_views
+from .views import resolve_views, problem_views, question_views, post_views, vote_views, answer_views, comment_views
 
 app_name = 'cojung'
 
