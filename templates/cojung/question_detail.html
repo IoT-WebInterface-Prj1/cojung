@@ -26,9 +26,15 @@
       <strong>
         {{question.user.username}}
       </strong>
-      <div style="color:#c3c4c4">
-        {{question.create_date}}
-      </div>
+      {% if question.modify_date %}
+        <div style="color:#c3c4c4">
+          {{question.modify_date}}(수정됨)
+        </div>
+      {% else %}
+        <div style="color:#c3c4c4">
+          {{question.create_date}}
+        </div>
+      {% endif %}
     </div>
 
     <!--제목-->

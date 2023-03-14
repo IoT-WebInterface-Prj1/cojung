@@ -14,9 +14,15 @@
                 <strong>
                     {% if answer.user == question.user %} <strong style = 'color:#eb5d56'>[작성자]</strong>{% endif %} {{answer.user.username}}
                 </strong>
-                <div style = "color:#c3c4c4">
-                    {{answer.create_date}}
-                </div>
+                {% if answer.modify_date %}
+                    <div style = "color:#c3c4c4">
+                        {{answer.modify_date}}(수정됨)
+                    </div>
+                {% else %}
+                    <div style = "color:#c3c4c4">
+                        {{answer.create_date}}
+                    </div>
+                {% endif %}
                 <div class = "bg-light" style = "padding:0px 20px; white-space : pre-line;">
                     {{answer.content}}
                     {% if request.user == answer.user %}
@@ -32,13 +38,17 @@
                         {% for comment in answer.comment_set.all %}
                             <div style = 'padding: 20px 50px 20px 50px;'>
                                 <i class="fa-brands fa-replyd" style = 'color : #5e66d8'></i>{% if comment.user == question.user %} <strong style = 'color:#eb5d56'>[작성자]</strong>{% endif %} <strong>{{comment.user.username}}</strong>
-                                    <div style = "color:#c3c4c4">{{comment.create_date}}</div>
+                                    {% if comment.modify_date %}
+                                        <div style = "color:#c3c4c4">{{comment.modify_date}}(수정됨)</div>
+                                    {% else %}
+                                        <div style = "color:#c3c4c4">{{comment.create_date}}</div>
+                                    {% endif %}
                                     <div style = 'padding-left : 30px; padding-right : 30px;'> 
                                         {{comment.content}} 
                                         {% if request.user == answer.user %}
                                         <div class = 'd-flex justify-content-end'>
-                                            <a href = "{% url 'cojung:comment_modify' comment.id %}" class="btn btn-outline-secondary" role="button" style = "margin: 0px 2px">수정</a>
-                                            <a href="#" data-uri = "{% url 'cojung:commentr_delete' comment.id %}" class="delete_comment btn btn-outline-danger" role="button" style = "margin: 0px 2px">삭제</a>
+                                            <a href = "{% url 'cojung:comment_answer_modify' comment.id %}" class="btn btn-outline-secondary" role="button" style = "margin: 0px 2px">수정</a>
+                                            <a href="#" data-uri = "{% url 'cojung:comment_answer_delete' comment.id %}" class="delete_comment btn btn-outline-danger" role="button" style = "margin: 0px 2px">삭제</a>
                                         </div>
                                         {% endif %}
                                     </div>
