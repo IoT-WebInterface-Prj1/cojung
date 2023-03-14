@@ -80,7 +80,7 @@ def question_modify(request, question_id):
         return redirect('cojung:question_detail', question_id = question.id)
     
     if request.method == "POST":
-        form = QuestionForm(request.POST, instance=question)
+        form = QuestionForm(request.POST, request.FILES, instance=question)
         if form.is_valid():
             question = form.save(commit=False)
             question.user = request.user
