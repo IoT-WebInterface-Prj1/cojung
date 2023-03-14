@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import resolve_views, problem_views, question_views, post_views, vote_views, answer_views, comment_views, language_views
+from .views import resolve_views, problem_views, question_views, post_views, vote_views, answer_views, comment_views
 
 app_name = 'cojung'
 
@@ -35,7 +35,4 @@ urlpatterns = [
 
     # 문제 업로드 / 질문 작성
     path('createquestion2/', post_views.create_question_problem, name='create_question_problem'),
-
-    # 언어 선택
-    # path('language/selection/<int:problem_id>/', language_views.select_python, name='select_python'),
 ]
