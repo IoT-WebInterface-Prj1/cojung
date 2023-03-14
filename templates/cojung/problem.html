@@ -73,7 +73,7 @@
       </div>
     </div>
     <div class="btn-group">
-            <form action="{% url 'cojung:create_question_problem' %}" method="post">
+            <form action="{% url 'cojung:create_question_problem'  problem.id %}" method="post">
               {% csrf_token %}
               <input type="submit" value="질문하기" class="btn btn-warning"/>
             </form>
