@@ -58,7 +58,7 @@
     {% if request.user == question.user %}
       <div class = 'd-flex justify-content-end'>
         <a href="{% url 'cojung:question_modify' question.id %}" class="btn btn-outline-secondary" role="button" style = "margin: 0px 2px">수정</a>
-        <a href="#" class="btn btn-outline-danger" role="button" style = "margin: 0px 2px">삭제</a>
+        <a href="#" data-uri = "{% url 'cojung:question_delete' question.id %}" class="delete btn btn-outline-danger" role="button" style = "margin: 0px 2px">삭제</a>
       </div>
     {% endif %}
     <br>
@@ -70,3 +70,18 @@
     {% include './answer_form.html' %}
   </div>
 {% endblock content %}
+
+<!--=============-->
+<!--Script 영역-->
+{% block script %}
+<script>
+  $(document).ready(function() {
+    $(".delete").on("click", function() {
+      if (confirm("정말로 삭제하시겠습니까?")) {
+        location.href = $(this).data('uri');
+      }
+    });
+  });
+</script>
+{% endblock script %}
+<!--=============-->

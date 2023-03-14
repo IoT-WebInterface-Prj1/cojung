@@ -17,6 +17,7 @@ urlpatterns = [
     path('question/', question_views.question, name = 'question'),
     path('question/<int:question_id>', question_views.question_detail, name = 'question_detail'),
     path('question/modify/<int:question_id>', question_views.question_modify, name = 'question_modify'),
+    path('question/delete/<int:question_id>', question_views.question_delete, name = 'question_delete'),
     
     #Answer Line --
     path('answer/create/<int:question_id>', answer_views.answer_create, name = 'answer_create'),
