@@ -16,7 +16,7 @@
   },
   "unibeautify.enabled": true,
   "[django-html]": {
-    "editor.formatOnSave": false,
+    "editor.formatOnSave": true,
     "editor.formatOnPaste": false
   }
 }

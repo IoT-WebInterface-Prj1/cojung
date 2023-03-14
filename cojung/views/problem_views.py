@@ -94,7 +94,7 @@ def detail(request,problem_id):
 #     context = {'contents':problem}
 #     return render(request,'cojung/problem.html',context) 
 
-@login_required(login_url='common:login')
+@login_required(login_url='member:login')
 def problem_modify(request, problem_id):
     problem = get_object_or_404(Problem, pk=problem_id)
     if request.user != problem.user:
@@ -113,7 +113,7 @@ def problem_modify(request, problem_id):
     return render(request, 'cojung/problem_form.html', context)
 
 
-@login_required(login_url='common:login')
+@login_required(login_url='member:login')
 def problem_delete(request, problem_id):
     problem = get_object_or_404(Problem, pk=problem_id)
     if request.user != problem.user:
