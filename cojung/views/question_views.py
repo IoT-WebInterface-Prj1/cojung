@@ -78,18 +78,21 @@ def question_modify(request, question_id):
     "Question" 게시글 수정
     """
     question = get_object_or_404(Question, pk = question_id)
+    oldTxtFile = ""
+    if question.txtfile:
+        oldTxtFile = question.txtfile
+        
     if request.user != question.user:
         messages.error(request, '수정권한이 없습니다 !')
         return redirect('cojung:question_detail', question_id = question.id)
     
     if request.method == "POST":
-        file_change_ck = request.POST.get('fileChange', False)
-        file_ck = request.POST.get('upload_files_clear', False)
-        
-        if file_change_ck or file_ck:
+        # 파일 삭제시 로컬 파일도 삭제
+        file_change_ck = request.POST.get('txtfile-clear', False)
+        if file_change_ck:
             os.remove(os.path.join(settings.MEDIA_ROOT, question.txtfile.path))
-        form = QuestionForm(request.POST, request.FILES, instance=question)
         
+        form = QuestionForm(request.POST, request.FILES, instance=question)
         if form.is_valid():
             question = form.save(commit=False)
             question.user = request.user
@@ -97,7 +100,9 @@ def question_modify(request, question_id):
             
             if request.FILES:
                 if 'txtfile' in request.FILES.keys():
-                    question.txtfile = request.FILES['txtfile'].name
+                    if (oldTxtFile and oldTxtFile.name != request.FILES['txtfile'].name):
+                        os.remove(os.path.join(settings.MEDIA_ROOT, oldTxtFile.path))
+                    question.txtfile = request.FILES['txtfile']
             
             question.save()
             messages.success(request, "수정이 완료되었습니다! ")
