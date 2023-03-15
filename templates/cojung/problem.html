@@ -19,17 +19,12 @@
           {{ problem.content|mark }}
         </div>
 
-        <!-- txt 파일 js 이용해서 읽기 -->
-        {% comment %} <button onclick="openTextFile()">파일보기</button>
-        <div id="output">...</div> {% endcomment %}
+        <!-- txt 파일 보기 -->
         {% if problem.txtfile %}
           <div>
             <a href="{{ problem.txtfile.url }}" class="btn btn-primary" target = "_blank">파일보기</a>
           </div>
         {% endif %}
-        
-        
-        
 
         <div class="d-flex justify-content-end">
           <div class="badge bg-light text-dark p-2 text-start">
@@ -72,36 +67,40 @@
         </div>
       </div>
     </div>
-    <div class="btn-group">
-            <form action="{% url 'cojung:create_question_problem'  problem.id %}" method="post">
-              {% csrf_token %}
-              <input type="submit" value="질문하기" class="btn btn-warning"/>
-            </form>
-            <form id = 'searchForm' method='get' action = "{% url 'cojung:question' %}">
-               <button id= 'btn' name= 'problem_num' value = {{ problem.id }} class = "btn btn-warning">질문보러가기</button> 
-            </form>
-    </div>
-                <form action="{% url 'cojung:resolve_create' problem.id %}" method="post" class="my-3">
-                {% csrf_token %}
-                  <input type="submit" value="      다른 사용자 풀이 보러가기       " class="btn btn-primary"/>
-                </form>
-                <form action="{% url 'cojung:resolve_create' problem.id %}" method="post" class="my-3">
-                  {% csrf_token %}
-                  <div class="mb-3">
-                    <label for="content" class="form-label">풀이내용</label>
-                    <textarea {% if not user.is_authenticated %} disabled {% endif %}
-                    name="content" id="content" class="form-control" rows="10"></textarea>
-                  </div>
-                  <input type="submit" value="풀이등록" class="btn btn-primary"/>
-                </form>
 
-        <form action="{% url 'cojung:index' %}" method="post" class="my-3">
-          {% csrf_token %}
-          <input type="submit" value="메인화면" class="btn btn-dark"/>
-        </form>
-      {% endblock %}
+  <div class="btn-group">
+    <form action="{% url 'cojung:create_question_problem'  problem.id %}" method="post">
+      {% csrf_token %}
+      <input type="submit" value="질문하기" class="btn btn-warning mx-2"/>
+    </form>
+  
+    <form id = 'searchForm' method='get' action = "{% url 'cojung:question' %}">
+        <button id= 'btn' name= 'problem_num' value = {{ problem.id }} class = "btn btn-warning">질문보러가기</button> 
+    </form>
+  </div>
+    
+    <form action="{% url 'cojung:resolve_create' problem.id %}" method="post" class="my-3">
+    {% csrf_token %}
+      <input type="submit" value="      다른 사용자 풀이 보러가기       " class="btn btn-primary"/>
+    </form>
+  
+    <form action="{% url 'cojung:resolve_create' problem.id %}" method="post" class="my-1">
+      {% csrf_token %}
+      <div class="mb-3">
+        <label for="content" class="form-label">풀이내용</label>
+        <textarea {% if not user.is_authenticated %} disabled {% endif %}
+        name="content" id="content" class="form-control" rows="10"></textarea>
+      </div>
+      <input type="submit" value="풀이등록" class="btn btn-primary"/>
+    </form>
 
-      {% comment %} {% block script %}
+    <form action="{% url 'cojung:index' %}" method="post" class="my-1">
+      {% csrf_token %}
+      <input type="submit" value="메인화면" class="btn btn-dark"/>
+    </form>
+{% endblock %}
+
+{% comment %} {% block script %}
         <script>
           function openTextFile() {
             var input = document.createElement("input");
@@ -127,6 +126,8 @@
           }
         </script>
       {% endblock script %} {% endcomment %}
+
+
 {% block script %}
 <script type='text/javascript'>
 const delete_elements = document.getElementsByClassName("delete");

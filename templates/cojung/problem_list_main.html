@@ -11,10 +11,10 @@
     </h2>
     <br>
     <!--정렬창/카테고리/검색 추가-->
-    <div class = 'row justify-content-between my-3' style = 'margin-bottom : 10px'>
+    <div class = 'd-flex justify-content-between my-3' style = 'margin-bottom : 10px'>
       <!--정렬창 추가-->
-      <div class = 'col-2 row justify-content-left'>
-        <div class = 'col-9'>
+      <div class = 'row justify-content-left'>
+        <div class = 'col-8'>
           <select class = 'form-control so'>
             <!--최신순-->
             <option value = 'recent' 
@@ -62,11 +62,17 @@
             </div>
           </form>
         </div>
+        <!-- 언어 선택시 언어 표시 -->
+        <div class = 'mt-2' id = 'lang-print'>
+          {% for lang in langLst %}
+            <span class="badge bg-secondary"> {{lang}}</span>
+          {% endfor %}
+        </div>
       </div>
       <!--카테고리 추가 끝-->
 
       <!--검색창 추가-->
-      <div class = 'col-4 '>
+      <div class = 'col-3'>
         <div class = 'input-group'>
           <input type = 'text' class = 'form-control kw' value = "{{kw|default_if_none:''}}">
           <div class = 'input-group-append'>
@@ -79,7 +85,49 @@
     <!--정렬창/카테고리/검색 추가 끝-->
 
     <!--문제/질문 리스트-->
-    <table class='table table-hover table-bordered'>
+    <!--문제 리스트 카드목록-->
+    {% if problemLst %}
+      <div class="row">
+      {% for problem in problemLst %}
+          <div class="col-md-4 mb-5">
+              <div class="card h-100">
+                  <div class="card-body">
+                    <div class = 'row'>
+                      <div class = 'col-7'>
+                        <h2 class="card-title mb-3" style = "overflow: hidden; white-space: normal;  
+                        display : -webkit-box; -webkit-line-clamp : 1; -webkit-box-orient : vertical; width: 250px;">
+                        {{problem.subject}}
+                        </h2>
+                        <p class="card-text" style = "overflow: hidden; white-space: normal;  
+                        display : -webkit-box; -webkit-line-clamp : 3; -webkit-box-orient : vertical; width: 250px;"> 
+                          {{ problem.content|striptags|cut:"&nbsp;" }} 
+                        </p> <!--card-text-->
+                      </div> <!--col-8-->
+                      <div class = 'col-5'>
+                        <div class = 'd-flex justify-content-end'>
+                        <button type="button" class="btn btn-outline-success mb-1" disabled = "disabled">
+                          쉬워요 <span class="badge bg-success" style='font-weight : bold'>{{problem.easy.count}}</span>
+                        </button>
+                        </div>
+                        <div class = 'd-flex justify-content-end'>
+                          <button type="button" class="btn btn-outline-danger" disabled = "disabled">
+                            어려워요 <span class="badge bg-danger" style='font-weight : bold'>{{problem.hard.count}}</span>
+                          </button>
+                        </div>
+                      </div> <!--col-4-->
+                    </div> <!--row-->
+                  </div> <!--card-body-->
+                  <div class="card-footer">
+                    <a class="btn btn-primary btn-sm" href="{% url 'cojung:detail' problem.id %}">문제 보기</a>
+                    <a class="btn btn-primary btn-sm" href="{% url 'cojung:resolve_detail' problem.id %}">풀이 보기 ({{problem.resolve_set.count}})</a>
+                  </div>
+              </div> <!--card h-100-->
+          </div> <!--col-md-4 mb-5-->
+      {% endfor %}
+      </div>
+    {% endif %}
+    
+    {% comment %} <table class='table table-hover table-bordered'>
       <thead>
         <tr class="thead-light">
           <th style='width:50px'>번호</th>
@@ -115,7 +163,7 @@
         {% endif %}
       </tbody>
     </table>
-  </div>
+  </div> {% endcomment %}
 
   <!--글 업로드 버튼-->
   {% include 'buttons.html' %}
@@ -132,7 +180,7 @@
     <input type = 'hidden' id = 'so' name = 'so' value = "{{so}}">
     <div id = 'lang-link' style = 'visibility:hidden'>
       {% for lang in langAllLst %}
-        <input type = 'checkbox' class = 'form-check-input check-lang' value = {{lang.name}} name = 'lang' {% if lang.name in langLst %} checked {% endif %}> {{lang.name}}
+        <input type = 'checkbox' class = 'form-check-input check-lang' id = "{{lang.name}}" value = "{{lang.name}}" name = 'lang' {% if lang.name in langLst %} checked {% endif %}> {{lang.name}}
       {% endfor %}
     </div>
   </form>

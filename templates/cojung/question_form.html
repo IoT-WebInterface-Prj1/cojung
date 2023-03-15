@@ -25,13 +25,13 @@
         <textarea name="content" rows="10" class="form-control" id="content">{{ form.content.value|default_if_none:'' }}</textarea>
       </div>
       <br>
-      {% if question.txtfile != null %}
+      {% if form.txtfile.name %}
         <label for="txtfile">첨부파일</label>
-          {{question.txtfile}}
+        <input type="file" class="form-control" name="txtfile" id="txtfile" value = {{form.txtfile.file}}>
       {% else %}
         <div class="form-group">
           <label for="txtfile">첨부파일</label>
-          <input type="file" class="form-control" name="txtfile" id="txtfile">
+          <input type="file" class="form-control-file" name="txtfile" id="txtfile">
         </div>
       {% endif %}
       <br>

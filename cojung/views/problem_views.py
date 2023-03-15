@@ -64,8 +64,7 @@ def index(request):
     # ==============
     # 페이징 처리
     # ==============
-    paginator = Paginator(problemLst, 1) #페이지당 10개씩
-    
+    paginator = Paginator(problemLst, 9) #페이지당 10개씩
     pageObj = paginator.get_page(page)
     
     # 페이징 기준으로 context 변수 정의
@@ -101,7 +100,7 @@ def problem_modify(request, problem_id):
         messages.error(request, '수정권한이 없습니다')
         return redirect('cojung:detail', problem_id=problem.id)
     if request.method == "POST":
-        form = ProblemForm(request.POST, instance=problem)
+        form = ProblemForm(request.POST, request.FILES, instance=problem)
         if form.is_valid():
             problem = form.save(commit=False)
             problem.modify_date = timezone.now()  # 수정일시 저장
@@ -109,7 +108,9 @@ def problem_modify(request, problem_id):
             return redirect('cojung:detail', problem_id=problem.id)
     else:
         form = ProblemForm(instance=problem)
-    context = {'form': form}
+
+    language_list = Language.objects.all()
+    context = {'form': form, 'language_list': language_list}
     return render(request, 'cojung/problem_form.html', context)
 
 
