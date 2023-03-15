@@ -21,7 +21,7 @@
     </div>
     <!--검색창 추가 끝-->
     <!--문제/질문 리스트-->
-    <table class = 'table table-hover table-bordered'>
+    <table class = 'table table-hover'>
         <thead>
             <tr class = "thead-light">
                 <th style='width:50px'>번호</th>
@@ -36,9 +36,9 @@
                     <tr>
                         <td>{{question.id}}</td>
                         <td>
-                            <a class = 'subject' href = "{% url 'cojung:question_detail' question.id %}">
+                            <a class = 'subject' href = "{% url 'cojung:question_detail' question.id %}" style = "text-decoration: none; color : black;">
                                 {% if question.problem %}
-                                    [{{question.problem.subject}}] 
+                                    <span style = "font-weight : bold; color : navy">[{{question.problem.subject}}]</span>
                                 {% endif %}
                                 {{question.subject}}
                             </a>
