@@ -110,7 +110,17 @@ def problem_modify(request, problem_id):
         form = ProblemForm(instance=problem)
 
     language_list = Language.objects.all()
-    context = {'form': form, 'language_list': language_list}
+    language_select_list = []
+    #선택한 언어가 있는 경우 list 추가
+    if problem.language:
+        for lang in problem.language.all():
+            language_select_list.append(lang.name)
+            
+    context = {
+        'form': form, 
+        'language_list': language_list,
+        'language_select_list' : language_select_list
+    }
     return render(request, 'cojung/problem_form.html', context)
 
 

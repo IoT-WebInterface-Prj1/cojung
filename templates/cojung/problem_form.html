@@ -22,7 +22,8 @@
         <label for="language">프로그래밍 언어 선택</label>
         <br>
         {% for language in language_list %}
-        <input type="checkbox" name="language" class="form-check-input" value="{{language.id}}"> {{language.name}}
+          <input type="checkbox" name="language" class="form-check-input" value="{{language.id}}"
+          {% if language.name in language_select_list %} checked {% endif %}> {{language.name}}
         {% endfor %}
       </div>
       <br>
