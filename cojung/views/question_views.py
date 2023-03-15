@@ -6,6 +6,9 @@ from django.core.paginator import Paginator
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.utils import timezone
+# file 수정 기능
+import os
+import config.settings as settings
 
 # ========
 # Question Line
@@ -45,7 +48,7 @@ def question(request):
     # ==============
     # 페이징처리
     # ==============
-    paginator = Paginator(questionLst, 2)
+    paginator = Paginator(questionLst, 10)
     pageObj = paginator.get_page(page)
     
     # 페이징 기준으로 context 변수 정의
@@ -80,17 +83,31 @@ def question_modify(request, question_id):
         return redirect('cojung:question_detail', question_id = question.id)
     
     if request.method == "POST":
+        file_change_ck = request.POST.get('fileChange', False)
+        file_ck = request.POST.get('upload_files_clear', False)
+        
+        if file_change_ck or file_ck:
+            os.remove(os.path.join(settings.MEDIA_ROOT, question.txtfile.path))
         form = QuestionForm(request.POST, request.FILES, instance=question)
+        
         if form.is_valid():
             question = form.save(commit=False)
             question.user = request.user
             question.modify_date = timezone.now()
+            
+            if request.FILES:
+                if 'txtfile' in request.FILES.keys():
+                    question.txtfile = request.FILES['txtfile'].name
+            
             question.save()
+            messages.success(request, "수정이 완료되었습니다! ")
             return redirect('cojung:question_detail', question_id = question.id)
     else:
         form = QuestionForm(instance=question)
         
     context = {'form' : form}
+    if question.txtfile:
+        context['txtfile'] = question.txtfile
     
     return render(request, 'cojung/question_form.html', context) 
     
