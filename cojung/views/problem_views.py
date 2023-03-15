@@ -104,6 +104,18 @@ def problem_modify(request, problem_id):
         if form.is_valid():
             problem = form.save(commit=False)
             problem.modify_date = timezone.now()  # 수정일시 저장
+            
+            #Language Add
+            if len(request.POST.getlist('language', None)) == 1:
+                # name="language", value=1  =>  {..., language=1, ...} 뽑아오는 코드
+                # 다중 선택일 시 리스트로 반환 [1, 2, 3]  =>  getlist 사용
+                # value가 int여야 함 (DB에는 id로 저장되기 때문에)
+                problem.language.add(request.POST.get('language', None))
+            else:
+                languages = request.POST.getlist('language', None)
+                for language_num in languages:
+                    problem.language.add(language_num)
+            
             problem.save()
             return redirect('cojung:detail', problem_id=problem.id)
     else:
