@@ -16,6 +16,15 @@
       </div>
     </div>
   </div>
+
+  <!--버튼 생성-->
+  <form action="{% url 'cojung:detail' problem.id %}" method="post" class="my-1">
+    {% csrf_token %}
+    <input type="submit" value="문제로 돌아가기" class="btn btn-light"/>
+  <form action="{% url 'cojung:index' %}" method="post" class="my-1">
+    {% csrf_token %}
+    <input type="submit" value="메인화면" class="btn btn-dark"/>
+
   <!-- 풀이 -->
   <h5 class="border-bottom my-3 py-2">
     {{problem.resolve_set.count}}개의 답변이 있습니다.

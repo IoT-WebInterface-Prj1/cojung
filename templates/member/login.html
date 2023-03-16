@@ -27,12 +27,14 @@
       <div class="row">
         <div class="col-6">
           <br>
-          <button type="submit" class="btn btn-primary mt-1">로그인</button>
+          <button type="submit" class="btn btn-success mt-1">로그인</button>
         </div>
-        <div class="col-6">
-          <i>if (you != member):</i>
+        <div class="col-6  mt-1">
+          <small id="help" class="form-text text-muted">
+            <i>if (you != member):</i>          
+          </small>
           <br>
-          <a href="{% url 'member:signup' %}" class="btn btn-primary mt-1">회원가입</a>
+          <a href="{% url 'member:signup' %}" class="btn btn-light mt-1">회원가입</a>
         </div>
       </div>
     </form>

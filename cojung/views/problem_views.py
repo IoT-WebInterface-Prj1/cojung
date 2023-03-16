@@ -135,6 +135,7 @@ def problem_modify(request, problem_id):
                     problem.language.remove(s)
             
             problem.save()
+            messages.success(request, "수정이 완료되었습니다! ")
             return redirect('cojung:detail', problem_id=problem.id)
     else:
         form = ProblemForm(instance=problem)

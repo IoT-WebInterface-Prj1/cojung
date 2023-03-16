@@ -1,4 +1,5 @@
 <!--Question_detail-->
+{% load bootstrap4 %}
 {% load cojung_filter %}
 {% block content %}
 
@@ -27,6 +28,7 @@
 
     <!--목록으로 돌아가기 버튼-->
     <a href="{% url 'cojung:question' %}" class='btn'>
+      <i class="fa-solid fa-arrow-rotate-left"></i>
       질문 목록으로 돌아가기
     </a>
 
