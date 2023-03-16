@@ -29,7 +29,7 @@
         <button type="button" class="btn dropdown-toggle" data-toggle="dropdown">
           언어 보기
         </button>
-        <div class="dropdown-menu">
+        <div class="dropdown-menu"  style = 'max-height : 150px; overflow:auto;'>
           {% if problem.language.count > 0 %}
             {% for lang in problem.language.all %}
               <span class="dropdown-item-text">{{lang.name}}</span>
@@ -42,20 +42,19 @@
     </div>
     <hr>
 
-    <div class="card my-3">
-      <div class="card-body">     
-        <div class="d-flex justify-content-between">
-          <div class="card-text">
-            {{ problem.content|mark }}
+    <div class="row">
+      <div class="col-10">
+        <div class="card my-3"> 
+          <div class="card-body"> 
+            <div class="card-text" style = 'z-index: 1;'>
+              {{ problem.content|mark }}
+            </div>
           </div>
-
-          <div> 
-            <!-- txt 파일 보기 -->
-            {% if problem.txtfile %}
-              <div>
-                <a href="{{ problem.txtfile.url }}" class="btn btn-outline-primary mb-2" target = "_blank"><i class="fa-regular fa-file"></i> 파일보기</a>
-              </div>
-            {% endif %}
+        </div>
+      </div>
+      <div class="col-2" style = 'z-index: 2;'>
+        <div class="d-flex justify-content-end"> 
+          <div>
             <div class="badge bg-light text-dark p-2 text-start">
               <div class="mb-2">{{ problem.user.username }}</div>
               <div>{{ problem.create_date }}</div>
@@ -92,11 +91,19 @@
                   </div>
                 </div>
               </div>
-            </div>
+              <!-- txt 파일 보기 -->
+              {% if problem.txtfile %}
+                <div class = 'mt-2'>
+                  <a href="{{ problem.txtfile.url }}" class="btn btn-outline-primary mb-2" target = "_blank"><i class="fa-regular fa-file"></i> 파일보기</a>
+                </div>
+              {% endif %}
+            </div> <!--파일, user정보-->
           </div>
         </div>
       </div>
     </div>
+      
+
 
     <div class="btn-group">
       <form action="{% url 'cojung:create_question_problem'  problem.id %}" method="post">
