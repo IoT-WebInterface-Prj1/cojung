@@ -53,7 +53,7 @@
             언어
           </button>
           <form id = 'langform' name = 'lang' action = "{% url 'cojung:index' %}" method = 'get'>
-            <div class="dropdown-menu form-check">
+            <div class="dropdown-menu">
               {% for lang in langAllLst %}
                 <label class = 'dropdown-item form-check-label'>
                   <input type='checkbox' class = 'form-check-input check-lang' value = {{lang.name}} name = 'lang' {% if lang.name in langLst %} checked {% endif %}> {{lang.name}}

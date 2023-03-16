@@ -107,8 +107,18 @@ def problem_modify(request, problem_id):
             problem = form.save(commit=False)
             problem.modify_date = timezone.now()  # 수정일시 저장
             
+            oldLangLst = problem.language.values('id')
+            getLangLst = request.POST.getlist('language', None)
+            
+            #집합 연산을 위해 Set 처리
+            oldLangSet = set()
+            getLangSet = set(getLangLst)
+            
+            for lang in oldLangLst:
+                oldLangSet.add(str(lang['id']))
+            
             #Language Add
-            if len(request.POST.getlist('language', None)) == 1:
+            if len(getLangLst) == 1:
                 # name="language", value=1  =>  {..., language=1, ...} 뽑아오는 코드
                 # 다중 선택일 시 리스트로 반환 [1, 2, 3]  =>  getlist 사용
                 # value가 int여야 함 (DB에는 id로 저장되기 때문에)
@@ -117,6 +127,12 @@ def problem_modify(request, problem_id):
                 languages = request.POST.getlist('language', None)
                 for language_num in languages:
                     problem.language.add(language_num)
+            
+            # 이전에 db에 남아있던 값 삭제
+            difSet = oldLangSet - getLangSet
+            if difSet:
+                for s in difSet:
+                    problem.language.remove(s)
             
             problem.save()
             return redirect('cojung:detail', problem_id=problem.id)
