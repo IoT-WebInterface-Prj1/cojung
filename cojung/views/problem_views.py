@@ -1,4 +1,3 @@
-
 from django.shortcuts import render, get_object_or_404, redirect
 from cojung.models import Problem, Language
 from django.core.paginator import Paginator
@@ -6,6 +5,9 @@ from django.db.models import Q, Count
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.utils import timezone
+# file 수정 기능
+import os
+import config.settings as settings
 
 from cojung.forms import ProblemForm
 # Create your views here.
@@ -98,15 +100,24 @@ def detail(request,problem_id):
 @login_required(login_url='member:login')
 def problem_modify(request, problem_id):
     problem = get_object_or_404(Problem, pk=problem_id)
+    oldTxtFile = ""
+    if problem.txtfile:
+        oldTxtFile = problem.txtfile
+        
     if request.user != problem.user:
         messages.error(request, '수정권한이 없습니다')
         return redirect('cojung:detail', problem_id=problem.id)
+    
     if request.method == "POST":
+        file_change_ck = request.POST.get('txtfile-clear', False)
+        if file_change_ck:
+            os.remove(os.path.join(settings.MEDIA_ROOT, problem.txtfile.path))
+        
         form = ProblemForm(request.POST, request.FILES, instance=problem)
         if form.is_valid():
             problem = form.save(commit=False)
             problem.modify_date = timezone.now()  # 수정일시 저장
-            
+            #Language 처리=================
             oldLangLst = problem.language.values('id')
             getLangLst = request.POST.getlist('language', None)
             
@@ -133,7 +144,16 @@ def problem_modify(request, problem_id):
             if difSet:
                 for s in difSet:
                     problem.language.remove(s)
-            
+            #========================
+                    
+            #파일 수정 처리==============
+            if request.FILES:
+                if 'txtfile' in request.FILES.keys():
+                    if (oldTxtFile and oldTxtFile.name != request.FILES['txtfile'].name):
+                        os.remove(os.path.join(settings.MEDIA_ROOT, oldTxtFile.path))
+                    problem.txtfile = request.FILES['txtfile']
+            #========================
+
             problem.save()
             messages.success(request, "수정이 완료되었습니다! ")
             return redirect('cojung:detail', problem_id=problem.id)
