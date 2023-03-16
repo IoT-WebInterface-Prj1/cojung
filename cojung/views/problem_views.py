@@ -35,10 +35,12 @@ def index(request):
     # ==============
     # 카테고리 기능 처리 
     # ==============
-    print(langLst)
     if langLst:
-        problemLst = Problem.objects.filter(language__name__in = langLst).distinct()
-            
+        # 선택된 언어 모두 되는 경우만 출력
+        # filter : distinct 를 하지 않음으로 중복 허용 -> 허용되는 언어 만큼 중복으로 출력
+        # annotate.filter : 같은 id를 가지는 문제 갯수를 셈 -> 중복되는 갯수가 정렬 언어의 수와 같은 경우 모두 적합함을 알 수 있음
+        problemLst = Problem.objects.filter(language__name__in = langLst)
+        problemLst = problemLst.annotate(count = Count('id')).filter(count = len(langLst))
     # ==============
     # 정렬처리
     # ==============
