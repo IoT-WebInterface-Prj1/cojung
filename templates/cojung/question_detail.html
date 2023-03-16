@@ -1,7 +1,8 @@
 <!--Question_detail-->
-{% extends 'base.html' %}
 {% load cojung_filter %}
 {% block content %}
+
+<div class = 'container my-3'>
   <div style="margin-top:80px">
     <!--사용자 오류 표시-->
     <div>
@@ -57,17 +58,19 @@
     </div>
     <br>
 
+    <!--파일 첨부 관련-->
+    {% if question.txtfile %}
+      <div class = 'd-flex justify-content-end'>
+        <a href="{{ question.txtfile.url }}" class="btn btn-outline-primary" target = "_blank"><i class="fa-regular fa-file"></i> 파일보기</a>
+      </div>
+    {% endif %}
+    
     <div style="font-size : large">
       {{question.content|mark}}
     </div>
-    {% if question.txtfile %}
-      <div>
-        <a href="{{ question.txtfile.url }}" class="btn btn-primary" target = "_blank">파일보기</a>
-      </div>
-    {% endif %}
     <br>
-
     <hr>
+
     {% if request.user == question.user %}
       <div class = 'd-flex justify-content-end'>
         <a href="{% url 'cojung:question_modify' question.id %}" class="btn btn-outline-secondary" role="button" style = "margin: 0px 2px">수정</a>
@@ -82,6 +85,7 @@
     <!--답변 작성-->
     {% include './answer_form.html' %}
   </div>
+</div>
 {% endblock content %}
 
 <!--=============-->
