@@ -8,7 +8,7 @@ from cojung.forms import ResolveForm,CommentForm
 from cojung.models import Problem, Resolve, Comment
 
 
-@login_required
+@login_required(login_url='member:login')
 def Resolve_create(request, problem_id):
     problem = get_object_or_404(Problem, pk=problem_id)
     if request.method == "POST":
@@ -25,7 +25,7 @@ def Resolve_create(request, problem_id):
     return render(request, 'cojung/resolve_list.html', context)
 
 
-@login_required(login_url='common:login')
+@login_required(login_url='member:login')
 def comment_create_resolve(request, resolve_id):
     """
     pybo 답글댓글등록
@@ -46,6 +46,7 @@ def comment_create_resolve(request, resolve_id):
     context = {'form': form}
     return render(request, 'cojung/comment_form.html', context)
 
+@login_required(login_url='member:login')
 def resolve_detail(request,problem_id):
     """
     Problem 게시글
@@ -54,7 +55,7 @@ def resolve_detail(request,problem_id):
     context = {'problem':problem}
     return render(request,'cojung/resolve_list.html',context)
 
-@login_required(login_url='common:login')
+@login_required(login_url='member:login')
 def resolve_modify(request, resolve_id):
     resolve = get_object_or_404(Resolve, pk=resolve_id)
     if request.user != resolve.user:
@@ -74,7 +75,7 @@ def resolve_modify(request, resolve_id):
     return render(request, 'cojung/resolve_form.html', context)
 
 
-@login_required(login_url='common:login')
+@login_required(login_url='member:login')
 def resolve_delete(request, resolve_id):
     resolve = get_object_or_404(Resolve, pk=resolve_id)
     if request.user != resolve.user:

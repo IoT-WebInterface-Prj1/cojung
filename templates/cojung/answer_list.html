@@ -30,6 +30,7 @@
                     </div>
                     {% endif %}
                 </div>
+
                 <!--Comment Line-->
                 <div style = "font-size: small">
                     {% if answer.comment_set.count > 0 %}
@@ -43,7 +44,7 @@
                                     {% endif %}
                                     <div style = 'padding-left : 30px; padding-right : 30px;'> 
                                         {{comment.content}} 
-                                        {% if request.user == answer.user %}
+                                        {% if request.user == comment.user %}
                                         <div class = 'd-flex justify-content-end'>
                                             <a href = "{% url 'cojung:comment_answer_modify' comment.id %}" class="btn btn-outline-secondary" role="button" style = "margin: 0px 2px">수정</a>
                                             <a href="#" data-uri = "{% url 'cojung:comment_answer_delete' comment.id %}" class="delete_comment btn btn-outline-danger" role="button" style = "margin: 0px 2px">삭제</a>

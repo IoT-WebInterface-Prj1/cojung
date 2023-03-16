@@ -49,11 +49,11 @@
         <!--정령창 추가 끝-->
         <!--카테고리 추가-->
         <div class="col-1 dropdown">
-          <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+          <button type="button" class="btn btn-light dropdown-toggle" data-toggle="dropdown">
             언어
           </button>
           <form id = 'langform' name = 'lang' action = "{% url 'cojung:index' %}" method = 'get'>
-            <div class="dropdown-menu form-check">
+            <div class="dropdown-menu" style = 'max-height : 150px; overflow:auto;'>
               {% for lang in langAllLst %}
                 <label class = 'dropdown-item form-check-label'>
                   <input type='checkbox' class = 'form-check-input check-lang' value = {{lang.name}} name = 'lang' {% if lang.name in langLst %} checked {% endif %}> {{lang.name}}
@@ -96,6 +96,7 @@
                       <div class = 'col-7'>
                         <h2 class="card-title mb-3" style = "overflow: hidden; white-space: normal;  
                         display : -webkit-box; -webkit-line-clamp : 1; -webkit-box-orient : vertical; width: 250px;">
+                        {% if problem.txtfile %}<span class="badge-light"><i class="fa-regular fa-file-lines"></i></span> {% endif %}
                         {{problem.subject}}
                         </h2>
                         <p class="card-text" style = "overflow: hidden; white-space: normal;  
@@ -118,8 +119,8 @@
                     </div> <!--row-->
                   </div> <!--card-body-->
                   <div class="card-footer">
-                    <a class="btn btn-primary btn-sm" href="{% url 'cojung:detail' problem.id %}">문제 보기</a>
-                    <a class="btn btn-primary btn-sm" href="{% url 'cojung:resolve_detail' problem.id %}">풀이 보기 ({{problem.resolve_set.count}})</a>
+                    <a class="btn btn-secondary btn-sm" href="{% url 'cojung:detail' problem.id %}">문제 보기</a>
+                    <a class="btn btn-secondary btn-sm" href="{% url 'cojung:resolve_detail' problem.id %}">풀이 보기 ({{problem.resolve_set.count}})</a>
                   </div>
               </div> <!--card h-100-->
           </div> <!--col-md-4 mb-5-->

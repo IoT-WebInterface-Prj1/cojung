@@ -38,10 +38,23 @@
         <textarea name="content" rows="10" class="form-control" id="content">{{ form.content.value|default_if_none:'' }}</textarea>
       </div>
       <br>
-      <div class="form-group">
-        <label for="txtfile">첨부파일</label>
-        <input type="file" class="form-control" name="txtfile" id="txtfile">
-      </div>
+      
+      <!--첨부파일 관련-->
+      {% if form.txtfile.value %}
+        <div>
+          <label for="txtfile" class = 'mb-2'>첨부파일</label>
+          <p> {{form.txtfile}} </p>
+        </div>
+      {% else %}
+        <div class="form-group">
+          <label for="txtfile" class = 'mb-2'>첨부파일</label>
+          <input type="file" class="form-control my-1" name="txtfile" id="txtfile">
+          <small id="help" class="form-text text-muted">
+            <i class="fa-solid fa-circle-exclamation"></i>
+            첨부할 파일을 업로드해주세요. 1개의 파일만이 업로드 가능합니다.
+          </small>
+        </div>
+      {% endif %}
       <!--
         !!!! 중요 >> name 값이 model의 field명과 같아야 함 다르면 업로드 안됩니다...
         name: 서버와 연결하는 작업할 때 / id: css나 js ==> 이름 맞춰주기!
